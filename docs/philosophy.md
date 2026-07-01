@@ -9,4 +9,10 @@
 
 ## ForgeCPU Design Principles
 - An instruction must justify its existence.
+    # rule 1:
+    - it enables something that is otherwise impossible.
+    # rule 2:
+    - it solves a major performance bottleneck
+    # rule 2:
+    - it dramatically simplifies almost every program.
 
