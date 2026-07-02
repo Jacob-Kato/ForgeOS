@@ -44,20 +44,21 @@ class ForgeCPU:
         self.registers[0] = a 
         return a 
 
+    def execute(self,program):
+        while self.halted == False:
+            self.loadProgram(program)
+            if self.decoded_opcode == 10:
+                self.HALT()
+                break
+            elif self.decoded_opcode == 0:
+                self.LOAD()
+                self.pc += 1
+                continue
+            if self.decoded_opcode == 1:
+                self.ADD()
+                self.pc += 1
+                continue
 
-
-    def execute(self):
-        self.decode()
-        self.LOAD()
-        self.pc +=1
-        self.decode()
-        self.LOAD()
-        self.pc += 1 
-        self.decode()
-        self.ADD()
-        self.pc +=1 
-        self.decode()
-        self.HALT()
 
 
 
