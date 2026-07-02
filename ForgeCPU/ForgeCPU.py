@@ -16,29 +16,38 @@ class ForgeCPU:
     def HALT(self):
         self.halted = True
     def fetch(self):
-        address = 0
-        self.current_instruction = self.memory[self.pc]
         try:
-            self.decoded_opcode = self.current_instruction[address]
-            address += 1 
-            self.decoded_arg1 = self.current_instruction[address]
-            address += 1
-            self.decoded_arg2 = self.current_instruction[address]
+            self.current_instruction = self.memory[self.pc]
         except IndexError:
-            print("Invalid instruction access")
+            print("Hardware Fault: PC out of bounds.")
+            self.HALT()
 
     def decode(self):
+        if not isinstance(self.current_instruction, list):
+            print("Hardware Fault: Invalid Instruction Structure.")
+            self.HALT()
+            return
+            
+        try:
+            self.decoded_opcode = self.current_instruction[0]
+            self.decoded_arg1 = self.current_instruction[1] if len(self.current_instruction) > 1 else None
+            self.decoded_arg2 = self.current_instruction[2] if len(self.current_instruction) > 2 else None
+        except Exception:
+            print("Hardware Fault: Instruction Unpacking Failed.")
+            self.HALT()
+            return
+
         if self.decoded_opcode == 0:
             self.LOAD()
         elif self.decoded_opcode == 1:
             self.ADD()
         elif self.decoded_opcode == 10:
-            self.store(self.decoded_arg1,self.decoded_arg2)
-
+            self.store(self.decoded_arg1, self.decoded_arg2)
         elif self.decoded_opcode == 11:
             self.HALT()
         else:
-            print("Invalid opcode access")
+            print(f"Hardware Fault: Invalid Opcode ({self.decoded_opcode}).")
+            self.HALT()
 
     def store(self,registers,address):
         self.memory[address] = self.registers[registers]
@@ -64,9 +73,10 @@ class ForgeCPU:
 
     def execute(self,program):
         self.loadProgram(program)
-        while self.halted == False:
+        while not self.halted:
             self.fetch()
-            self.decode()
+            if not self.halted:
+                self.decode()
             self.pc +=1 
         return
 
