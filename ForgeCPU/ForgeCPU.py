@@ -15,17 +15,33 @@ class ForgeCPU:
             self.memory[i] = program[i]
     def HALT(self):
         self.halted = True
-    def decode(self):
+    def fetch(self):
+        address = 0
         self.current_instruction = self.memory[self.pc]
-        self.decoded_opcode = self.current_instruction[0]
-        if self.decoded_opcode == 10:
-            return
-        if self.decoded_opcode != 0 and self.decoded_opcode != 1 and self.decoded_opcode != 10:
-            raise Exception(f"Invalid opcode cpu cycle {self.pc}")
-        self.decoded_arg1 = self.current_instruction[1]
-        if self.decoded_arg1 != 0 and self.decoded_arg1 != 1:
-            raise Exception(f"Invalid arg1  cpu cycle {self.pc}")
-        self.decoded_arg2 = self.current_instruction[2]
+        try:
+            self.decoded_opcode = self.current_instruction[address]
+            address += 1 
+            self.decoded_arg1 = self.current_instruction[address]
+            address += 1
+            self.decoded_arg2 = self.current_instruction[address]
+        except IndexError:
+            print("Invalid instruction access")
+
+    def decode(self):
+        if self.decoded_opcode == 0:
+            self.LOAD()
+        elif self.decoded_opcode == 1:
+            self.ADD()
+        elif self.decoded_opcode == 10:
+            self.store(self.decoded_arg1,self.decoded_arg2)
+
+        elif self.decoded_opcode == 11:
+            self.HALT()
+        else:
+            print("Invalid opcode access")
+
+    def store(self,registers,address):
+        self.memory[address] = self.registers[registers]
 
     def LOAD(self):
         self.registers[self.decoded_arg1] = self.decoded_arg2
@@ -47,20 +63,11 @@ class ForgeCPU:
 
 
     def execute(self,program):
-        
+        self.loadProgram(program)
         while self.halted == False:
-            self.loadProgram(program)
+            self.fetch()
             self.decode()
-            if self.decoded_opcode == 0:
-                self.LOAD()
-                self.pc += 1 
-                continue
-            elif self.decoded_opcode == 1:
-                self.ADD()
-                self.pc+=1
-                continue
-            elif self.decoded_opcode == 10:
-                self.HALT()
+            self.pc +=1 
         return
 
 
@@ -69,7 +76,8 @@ class ForgeCPU:
 program = [[0,0,1],
            [0,1,2],
            [1,0,1],
-           [10]]
+           [10,0,7],
+           [11]]
 
 cpu = ForgeCPU()
 
