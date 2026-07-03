@@ -38,13 +38,13 @@ class ForgeCPU:
             return
 
         if self.decoded_opcode == 0:
-            self.LOAD()
+            return 0
         elif self.decoded_opcode == 1:
-            self.ADD()
+            return 1 
         elif self.decoded_opcode == 10:
-            self.store(self.decoded_arg1, self.decoded_arg2)
+            return 10 
         elif self.decoded_opcode == 11:
-            self.HALT()
+            return 11
         else:
             print(f"Hardware Fault: Invalid Opcode ({self.decoded_opcode}).")
             self.HALT()
@@ -53,7 +53,10 @@ class ForgeCPU:
         self.memory[address] = self.registers[registers]
 
     def LOAD(self):
-        self.registers[self.decoded_arg1] = self.decoded_arg2
+        if self.decoded_arg1 > 1:
+            self.registers[self.decoded_arg2] = self.memory[self.decoded_arg1]
+        else:
+            self.registers[self.decoded_arg1] = self.decoded_arg2
 
 
     def ADD(self):
@@ -66,7 +69,7 @@ class ForgeCPU:
             carry = (a&b)<<1 
             a = sum_without_carry
             b = carry
-        self.registers[0] = a 
+        self.registers[self.decoded_arg1] = a 
         return a 
 
 
@@ -76,17 +79,31 @@ class ForgeCPU:
         while not self.halted:
             self.fetch()
             if not self.halted:
-                self.decode()
+                action = self.decode()
+                if action == 0:
+                    self.LOAD()
+                elif action == 1:
+                    self.ADD()
+                elif action == 10:
+                    self.store(self.decoded_arg1,self.decoded_arg2)
+                elif action == 11:
+                    self.HALT()
+                else:
+                    print(f"Hardware Fault: Invalid Opcode ({self.decoded_opcode}).")
+                    self.HALT()
+            print(f"{self.pc}: {self.__dict__}\n")
+
             self.pc +=1 
         return
 
 
 
 
-program = [[0,0,1],
-           [0,1,2],
+program = [[0,0,2],
+           [0,1,3],
            [1,0,1],
            [10,0,7],
+           [0,7,0],
            [11]]
 
 cpu = ForgeCPU()
@@ -94,3 +111,33 @@ cpu = ForgeCPU()
 cpu.loadProgram(program)
 cpu.execute(program)
 print(cpu.__dict__)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#instructions 
+
+# Opcode| R | Num/addr/undef    
+#--------------------------     
+#LOAD |00| 0 |  00000     |
+#--------------------------     
+#ADD  |01| 0 | 0 | 0000   |
+#--------------------------      
+#STORE|10| 0 |  00000     |
+#--------------------------    
+#HALT |11|      000000    |
+#--------------------------    
+
+
+
+
