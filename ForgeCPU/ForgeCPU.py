@@ -7,6 +7,7 @@ class ForgeCPU:
         self.halted = False
         self.current_instruction = None
         self.decoded_opcode = None
+        self.decoded_mode = None
         self.decoded_arg1 = None
         self.decoded_arg2 = None
 
@@ -32,6 +33,7 @@ class ForgeCPU:
             self.decoded_opcode = self.current_instruction[0]
             self.decoded_arg1 = self.current_instruction[1] if len(self.current_instruction) > 1 else None
             self.decoded_arg2 = self.current_instruction[2] if len(self.current_instruction) > 2 else None
+            self.decoded_mode = self.current_instruction[3] if len(self.current_instruction) > 3 else None
         except Exception:
             print("Hardware Fault: Instruction Unpacking Failed.")
             self.HALT()
@@ -52,8 +54,8 @@ class ForgeCPU:
     def store(self,registers,address):
         self.memory[address] = self.registers[registers]
 
-    def LOAD(self):
-        if self.decoded_arg1 > 1:
+    def LOAD(self,mode=None):
+        if mode:
             self.registers[self.decoded_arg2] = self.memory[self.decoded_arg1]
         else:
             self.registers[self.decoded_arg1] = self.decoded_arg2
@@ -81,7 +83,7 @@ class ForgeCPU:
             if not self.halted:
                 action = self.decode()
                 if action == 0:
-                    self.LOAD()
+                    self.LOAD(self.decoded_mode)
                 elif action == 1:
                     self.ADD()
                 elif action == 10:
@@ -98,12 +100,32 @@ class ForgeCPU:
 
 
 
+# Loop program 
+# [0,1,2] load loop count into register two 
+# [0,0,0] load current count into register one 
+# theres a reason i do it this way beacuse when you preform the additon the result will be 
+# put in register one
+# [10,1,7] store the loop count into memory
+# [0,1,1] load one into register two 
+# [1,0,1] you increass the current count by one 
+# so now register one holds the result to the additon
+# [0,7,1,1] load the loop count back into register two 
+# [100,0,1] this is assuming we have a comp Opcode to see if register one and two are the same 
+# if they are not we jump back to instruction 3 
+#
+# it looks like we need two Opcode anyways because jumping back to an instruction can't be the same as comp 
+# again how would the program know where to jump 
+# maybe decod can look at the result of the comp than either call jump or keep the program going 
+#
+
+
+
 
 program = [[0,0,2],
            [0,1,3],
            [1,0,1],
            [10,0,7],
-           [0,7,0],
+           [0,7,0,1],
            [11]]
 
 cpu = ForgeCPU()
