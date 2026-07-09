@@ -4,7 +4,8 @@ class ForgeCPU:
         self.pc = 0
         self.memory = [0] * 16 
 # i feel that it only fair that because we doubled the Opcode we should doubled memory
-        self.cache = None
+        self.flage_registers = None # did more looking and cache 
+        # would not be the right name for this 
          
         self.halted = False
         self.current_instruction = None
