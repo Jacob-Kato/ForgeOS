@@ -2,10 +2,9 @@ class ForgeCPU:
     def __init__(self):
         self.registers = [0, 0]
         self.pc = 0
-        self.memory = [0] * 16 
+        self.memory = [0] * 64 
 # i feel that it only fair that because we doubled the Opcode we should doubled memory
-        self.flage_registers = None # did more looking and cache 
-        # would not be the right name for this 
+        self.flag_register = None
          
         self.halted = False
         self.current_instruction = None
@@ -62,14 +61,10 @@ class ForgeCPU:
         self.memory[address] = self.registers[registers]
 
     def comp(self,registerA,registerB):
-        self.cache = (self.registers[registerA] == self.registers[registerB])
+        self.flag_register = (self.registers[registerA] == self.registers[registerB])
 
     def jump(self,pos):
-        if self.cache:
-            return True
-        else:
-            self.pc = pos
-            return False
+        self.pc = pos
 
     def LOAD(self,mode=None):
         if mode:
@@ -108,8 +103,11 @@ class ForgeCPU:
                 elif action == 11:
                     self.comp(self.decoded_arg1,self.decoded_arg2)
                 elif action == 100:
-                    if not self.jump(self.decoded_arg1):
-                        continue
+                    if not self.flag_register: 
+                        self.jump(self.decoded_arg1)
+                        self.flag_register = None
+                    self.flag_register = None
+
                 elif action == 101:
                     self.HALT()
                 else:
@@ -121,60 +119,6 @@ class ForgeCPU:
 
             self.pc +=1 
         return
-
-
-
-# Loop program 
-# [0,1,2] load loop count into register two 
-# [0,0,0] load current count into register one 
-# theres a reason i do it this way beacuse when you preform the additon the result will be 
-# put in register one
-# [10,1,7] store the loop count into memory
-# [0,1,1] load one into register two 
-# [1,0,1] you increass the current count by one 
-# so now register one holds the result to the additon
-# [0,7,1,1] load the loop count back into register two 
-# [100,0,1] this is assuming we have a comp Opcode to see if register one and two are the same 
-# if they are not we jump back to instruction 3 
-#
-# it looks like we need two Opcode anyways because jumping back to an instruction can't be the same as comp 
-# again how would the program know where to jump 
-# maybe decod can look at the result of the comp than either call jump or keep the program going 
-#
-#assuming comp works like this 
-# def (self, registerA,registerB):
-#   self.register[registerA] = (registerA == registerB)
-#   return
-
-
-
-
-program = [[0,1,2],
-           [0,0,0],
-           [10,1,10],
-           [0,1,1],
-           [1,0,1],
-           [0,10,1,1],
-           [11,0,1],
-           [100,3],
-           [101]]
-
-cpu = ForgeCPU()
-
-cpu.loadProgram(program)
-cpu.execute(program)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #instructions 
@@ -192,7 +136,4 @@ cpu.execute(program)
 #--------------------------- 
 #HALT |101|      000000    |
 #--------------------------- 
-
-
-
 
