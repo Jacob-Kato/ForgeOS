@@ -61,7 +61,7 @@ class ForgeCPU:
         self.memory[address] = self.registers[registers]
 
     def comp(self,registerA,registerB):
-        self.cache = (registerA == registerB)
+        self.cache = (self.registers[registerA] == self.registers[registerB])
 
     def jump(self,pos):
         if self.cache:
@@ -107,14 +107,16 @@ class ForgeCPU:
                 elif action == 11:
                     self.comp(self.decoded_arg1,self.decoded_arg2)
                 elif action == 100:
-                    if self.jump(self.decoded_arg1):
+                    if not self.jump(self.decoded_arg1):
                         continue
                 elif action == 101:
                     self.HALT()
                 else:
                     print(f"Hardware Fault: Invalid Opcode ({self.decoded_opcode}).")
                     self.HALT()
-            print(f"{self.pc}: {self.__dict__}\n")
+            for keyname in self.__dict__:
+                print(f"{self.pc}:{keyname}->{self.__dict__[keyname]}")
+
 
             self.pc +=1 
         return
@@ -146,18 +148,20 @@ class ForgeCPU:
 
 
 
-program = [[0,0,2],
-           [0,1,3],
+program = [[0,1,2],
+           [0,0,0],
+           [10,1,10],
+           [0,1,1],
            [1,0,1],
-           [10,0,7],
-           [0,7,0,1],
-           [11]]
+           [0,10,1,1],
+           [11,0,1],
+           [100,3],
+           [101]]
 
 cpu = ForgeCPU()
 
 cpu.loadProgram(program)
 cpu.execute(program)
-print(cpu.__dict__)
 
 
 
