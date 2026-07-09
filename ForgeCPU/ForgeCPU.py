@@ -2,7 +2,9 @@ class ForgeCPU:
     def __init__(self):
         self.registers = [0, 0]
         self.pc = 0
-        self.memory = [0] * 8
+        self.memory = [0] * 16 
+# i feel that it only fair that because we doubled the Opcode we should doubled memory
+        self.cache = None
          
         self.halted = False
         self.current_instruction = None
@@ -47,12 +49,26 @@ class ForgeCPU:
             return 10 
         elif self.decoded_opcode == 11:
             return 11
+        elif self.decoded_opcode == 100:
+            return 100
+        elif self.decoded_opcode == 101:
+            return 101
         else:
             print(f"Hardware Fault: Invalid Opcode ({self.decoded_opcode}).")
             self.HALT()
 
     def store(self,registers,address):
         self.memory[address] = self.registers[registers]
+
+    def comp(self,registerA,registerB):
+        self.cache = (registerA == registerB)
+
+    def jump(self,pos):
+        if self.cache:
+            return True
+        else:
+            self.pc = pos
+            return False
 
     def LOAD(self,mode=None):
         if mode:
@@ -89,6 +105,11 @@ class ForgeCPU:
                 elif action == 10:
                     self.store(self.decoded_arg1,self.decoded_arg2)
                 elif action == 11:
+                    self.comp(self.decoded_arg1,self.decoded_arg2)
+                elif action == 100:
+                    if self.jump(self.decoded_arg1):
+                        continue
+                elif action == 101:
                     self.HALT()
                 else:
                     print(f"Hardware Fault: Invalid Opcode ({self.decoded_opcode}).")
@@ -117,6 +138,10 @@ class ForgeCPU:
 # again how would the program know where to jump 
 # maybe decod can look at the result of the comp than either call jump or keep the program going 
 #
+#assuming comp works like this 
+# def (self, registerA,registerB):
+#   self.register[registerA] = (registerA == registerB)
+#   return
 
 
 
@@ -148,17 +173,20 @@ print(cpu.__dict__)
 
 
 #instructions 
-
 # Opcode| R | Num/addr/undef    
-#--------------------------     
-#LOAD |00| 0 |  00000     |
-#--------------------------     
-#ADD  |01| 0 | 0 | 0000   |
-#--------------------------      
-#STORE|10| 0 |  00000     |
-#--------------------------    
-#HALT |11|      000000    |
-#--------------------------    
+#----------------------------
+#LOAD |000| 0 |  00000     |
+#----------------------------
+#ADD  |001| 0 | 0 | 0000   |
+#--------------------------- 
+#STORE|010| 0 |  00000     |
+#--------------------------- 
+#COMP |011| 0 | 0 |00      |
+#--------------------------- 
+#JUMP |100| 00000          |
+#--------------------------- 
+#HALT |101|      000000    |
+#--------------------------- 
 
 
 
