@@ -1,319 +1,114 @@
-# ForgeCPU V0 Specification (Architecture Freeze)
----- 
-# Goal
+# ForgeCPU Architecture Reference
 
-ForgeCPU V0 has exactly one purpose:
+### System Specifications
 
-> Add two numbers and store the result.
+* **Memory:** 64 locations (0-63).
+* **Registers:** 2 general-purpose registers (`R0` and `R1`).
+* **Program Counter (PC):** Tracks the current execution address.
+* **Flag Register:** A single state flag used to store the result of the `COMP` (compare) instruction.
+* **Instruction Format:** Instructions are structured as Python lists: `[Opcode, Arg1, Arg2, Mode]`. The length of the list adapts to the instruction being used.
 
-Nothing more.
+> **Note on Opcodes:** The CPU reads opcodes visually structured as binary (e.g., `100`, `101`), but processes them natively as base-10 integers in Python. For example, `STORE` uses the integer `10`, not the binary value `0b010` (which would evaluate to `2`).
+---
+### Instruction Set Quick Reference
 
-No loops.
-
-No branches.
-
-No subtraction.
-
-No multiplication.
-
-No stack.
-
-No functions.
+| Opcode | Mnemonic | Arguments (List Format) | Action |
+| --- | --- | --- | --- |
+| `0` | **LOAD (Imm)** | `[0, Reg, Value]` | Load an immediate value into a register. |
+| `0` | **LOAD (Mem)** | `[0, Addr, Reg, 1]` | Load a value from memory into a register. |
+| `1` | **ADD** | `[1, RegA, RegB]` | Add `RegB` to `RegA`, storing the result in `RegA`. |
+| `10` | **STORE** | `[10, Reg, Addr]` | Store the value of a register into memory. |
+| `11` | **COMP** | `[11, RegA, RegB]` | Compare two registers. Sets Flag to `True` if equal. |
+| `100` | **JUMP** | `[100, Addr]` | Jump to memory address if Flag is `False` or `None`. |
+| `101` | **HALT** | `[101]` | Stop execution. |
 
 ---
 
-# Hardware
+### Instruction Details
 
-### Registers
+#### `LOAD` (Opcode: `0`)
 
-Exactly **2** general-purpose registers.
+Loads a value into a target register. The behavior changes depending on whether the `mode` argument is provided.
 
-```text
-R0
-R1
-```
+* **Immediate Mode (Load Value):** `[0, target_register, value]`
+* *Effect:* Sets `target_register` to the provided integer `value`.
+* *Example:* `[0, 0, 42]` sets `R0 = 42`.
 
-No others.
 
----
+* **Memory Mode (Load from Address):** `[0, source_address, target_register, 1]`
+* *Effect:* Reads memory at `source_address` and stores it in `target_register`.
+* *Example:* `[0, 15, 1, 1]` sets `R1 = memory[15]`.
 
-### Program Counter
 
-Exactly one Program Counter.
 
-Its only responsibility is remembering the address of the current instruction.
+#### `ADD` (Opcode: `1`)
 
-After every successful instruction:
+Performs a bitwise addition of two registers.
 
-```
-PC = PC + 1
-```
+* **Syntax:** `[1, target_register, source_register]`
+* *Effect:* Adds the value of `source_register` to `target_register` and overwrites `target_register` with the sum.
+* *Example:* `[1, 0, 1]` results in `R0 = R0 + R1`.
 
-Until HALT.
 
-No jumps exist yet.
 
----
+#### `STORE` (Opcode: `10`)
 
-### Memory
+Saves a register's current value into memory.
 
-One flat memory space.
+* **Syntax:** `[10, source_register, target_address]`
+* *Effect:* Writes the value of `source_register` into `memory[target_address]`.
+* *Example:* `[10, 0, 63]` stores the value of `R0` into memory location `63`.
 
-Memory stores:
 
-* Instructions
-* Data
 
-There is no separation.
+#### `COMP` (Opcode: `11`)
 
----
+Compares the values of two registers to check for equality.
 
-### ALU
+* **Syntax:** `[11, register_A, register_B]`
+* *Effect:* If `register_A == register_B`, the internal Flag Register becomes `True`. Otherwise, it becomes `False`.
+* *Example:* `[11, 0, 1]` compares `R0` and `R1`.
 
-Supports exactly one arithmetic operation:
 
-```
-ADD
-```
 
-Nothing else.
+#### `JUMP` (Opcode: `100`)
 
----
+A conditional "Jump If Not Equal" instruction.
 
-# Instruction Set
+* **Syntax:** `[100, target_address]`
+* *Effect:* The CPU jumps to `target_address` **only if** the Flag Register is `False` or `None`. Once evaluated, the Flag Register is reset to `None`.
+* *Note:* If executed without a preceding `COMP` instruction, this acts as an unconditional jump.
+* *Example:* `[100, 5]` moves the Program Counter to address 5.
 
-Exactly four instructions.
 
-```
-LOAD
-ADD
-STORE
-HALT
-```
+
+#### `HALT` (Opcode: `101`)
+
+Terminates the program.
+
+* **Syntax:** `[101]`
+* *Effect:* Sets `self.halted = True`, stopping the execution loop safely.
+
+
 
 ---
 
-# Instruction Behavior
+### Example Program
 
-## LOAD
+Here is how a program looks when loaded into `ForgeCPU`. This program loads 5 into `R0`, 5 into `R1`, compares them, and halts.
 
-Copies an immediate value into a register.
+```python
+cpu = ForgeCPU()
 
-Example:
+program = [
+    [0, 0, 5],     # Address 0: LOAD 5 into R0
+    [0, 1, 5],     # Address 1: LOAD 5 into R1
+    [11, 0, 1],    # Address 2: COMP R0 and R1 (Flag becomes True)
+    [100, 10],     # Address 3: JUMP to 10 if Not Equal (Skipped because Flag is True)
+    [101]          # Address 4: HALT
+]
 
-```
-LOAD R0, 2
-```
-
-After execution:
-
-```
-R0 = 2
-```
-
----
-
-## ADD
+cpu.execute(program)
 
 ```
-ADD R0, R1
-```
-
-Means:
-
-```
-R0 = R0 + R1
-```
-
-R1 is unchanged.
-
----
-
-## STORE
-
-```
-STORE R0, Address
-```
-
-Copies the contents of R0 into memory.
-
----
-
-## HALT
-
-Stops execution immediately.
-
----
-
-# Execution Model
-
-The CPU repeatedly performs:
-
-```
-Fetch
-
-↓
-
-Decode
-
-↓
-
-Execute
-
-↓
-
-Increment PC
-
-↓
-
-Repeat
-```
-
-Until HALT.
-
----
-
-# CPU Philosophy
-
-The CPU **never guesses**.
-
-Every destination is explicit.
-
-No hidden behavior.
-
-No automatic register selection.
-
-No automatic storing.
-
-No automatic memory allocation.
-
----
-
-# Error Handling
-
-Invalid opcode:
-
-```
-STOP
-
-Invalid Instruction
-```
-
-Nothing else.
-
----
-
-# Reserved Features
-
-These do **not** exist.
-
-If you accidentally add them during implementation, remove them.
-
-Branches
-
-Stack
-
-Function calls
-
-Variables
-
-Labels
-
-Immediate arithmetic
-
-Multiplication
-
-Subtraction
-
-Division
-
-Interrupts
-
-Caches
-
-Pipelines
-
-Multiple cores
-
-Flags
-
-Conditional execution
-
-Floating point
-
----
-
-# Python Constraints
-
-I'm intentionally making these strict.
-
-These are not to make your life difficult.
-
-They're to force the architecture to stay visible.
-
-### Constraint 1
-
-Do **not** use Python's integer addition to implement the ALU.
-
-When implementing `ADD`, use the logic-gate approach we derived earlier:
-
-* XOR
-* AND
-* Carry propagation
-
-In other words, build an adder, not `a + b`.
-
-(We'll revisit whether to start with 8-bit or 16-bit values when you begin.)
-
----
-
-### Constraint 2
-
-The CPU must execute through an explicit **fetch → decode → execute** loop.
-
-No shortcuts like "just run the program list."
-
----
-
-### Constraint 3
-
-Instructions should be represented as **machine instructions**, not Python function calls.
-
-The emulator should feel like it's executing a CPU, not a Python program.
-
----
-
-### Constraint 4
-
-Every architectural component must have a corresponding implementation.
-
-If the specification says there is a Program Counter, your emulator should have one.
-
-If it says there are two registers, your emulator should have exactly two.
-
-No hidden state.
-
----
-
-### Constraint 5
-
-The emulator must be debuggable.
-
-After every instruction, you should be able to inspect:
-
-* Program Counter
-* R0
-* R1
-* Current instruction
-* Memory (or at least the modified parts)
-
-If something goes wrong, we want to be able to "pause the CPU" and inspect its state.
-
----
-
-### Constraint 6
-
-Do not optimize.
-
-Make the code read like hardware.
 
