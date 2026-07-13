@@ -1,26 +1,14 @@
-org 0x7C00
-; this tells the assembler to start calculating all memory offset at x7C00
+BITS 64           ;sense i'm using UEFI instead of BIOS the cpu is alread in 64 bit mode 
+DEFAULT REL       ;this sets the default to REL that means the assembler will auto use RIP
 
-bits 16 ;this outputs 16-bit instructions from the code 
+;UEFI Table Offsets
+OFFSET_BOOT_SERVICES equ 96    ;this says that BootServicess table pointer is located exactly 96 bytes away from the start of the UEFI system table
 
-; i found that the processor will always think its in 16 bit mode 
+OFFSET_GET_MEMORY_MAP equ 56   ;this means that inside the efi_boot_services table, the function pointer to fetch the system's memory map is at exactly 56 bytes away from the start of that table
 
-main: ; this is a loop that stops the cpu from going any further
+OFFSET_EXIT_BOOT_SERV equ 232  ;this is says the function pointer to shut down UEFI boot services is exactly 232 bytes away from the start of that table
 
-  hlt ;does this by halting the program but it only halts until the next
+section .text    ;this tells the assembler that it is reading the code part of my program
+global efi_main
 
-  ; interrupt but i need to make sure the program stays halted 
-  
-  ; that we have the label halt that has one instructions to jump back to it self 
 
-.halt:
-
-  jmp .halt
-
-;this is where we add the 0AA55h sign for the UEFI 
-;the desk i'm using is 512 so we want to place the sign in the last two bytes
-time 510-($-$$) db 0 ;this $-$$ gives use the size of our program 
-
-;if we take 510 - $-$$ we get the last two bytes in the program
-
-dw 0AA55h 
