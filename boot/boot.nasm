@@ -29,5 +29,25 @@ efi_main:
   mov [sys_table], rdx
 
   mov rsi, [rdx + OFFSET_BOOT_SERVICES] ;this finds the boot services pointer and moves it to rsi 
-  mov [boot_services], rsi ; this moves the boot services pointer to RAM at boot_services
+  mov [boot_services], rsi              ; this moves the boot services pointer to RAM at boot_services
+
+  lea rcx, [mem_map_size]    ;this tells UEFI how big my buffer is 
+  lea rdx, [mem_map_buffer]  ;this is the massive empty space where UEFI will write the memory map 
+  lea r8, [mem_map_key]      ;this is where UEFI will drop the password
+  lea r9, [mem_descr_size]   ;UEFI will fill this with the size of each individual entry in the map 
+
+  lea rax, [mem_descr_ver]
+  mov [rsp + 32],rax 
+  call [OFFSET_GET_MEMORY_MAP + rsi]
+
+  mov rcx, [img_handle]
+  mov rdx, [mem_map_key]
+  call [OFFSET_EXIT_BOOT_SERV + rsi]
+
+  cli
+
+halt:
+  hlt
+  jmp halt
+
 
