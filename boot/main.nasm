@@ -32,4 +32,39 @@ efi_main:
     test rax, rax
     jnz .failed
 
+; the handoff 
 
+    jmp ForgeOS_main
+
+.failed:
+    cli
+    hlt
+    jmp .failed
+
+; ForgeOS 
+ForgeOS_main:
+    cli            ;Clear interrupts; my kernel will handle it 
+
+
+    ;Initialize the serial port hardware (COM1 Base = 0x3F8)
+    mov dx, 0x3F9 ; interrupt Enable register
+    xor al, al 
+    out dx, al    ;Disable all serial interrupts
+
+    mov dx, 0x3FB ;Line control register
+    mov al, 0x03  ;8 bits, no parity, 1 stop bit
+    out dx, al 
+
+    lea rsi, [kernel_msg]
+.print_loop:
+    lodsb 
+    or al, al
+    jz .kernel_halt
+
+    mov dx, ox3F8
+    out dx, al 
+    jmp .print_loop
+
+.kernel_halt:
+    hlt
+    jmp .kernel_halt
