@@ -9,6 +9,27 @@ OFFSET_GET_MEMORY_MAP equ 56   ;this means that inside the efi_boot_services tab
 OFFSET_EXIT_BOOT_SERV equ 232  ;this is says the function pointer to shut down UEFI boot services is exactly 232 bytes away from the start of that table
 
 section .text    ;this tells the assembler that it is reading the code part of my program
-global efi_main
+global efi_main  ;makes the function public
+
+efi_main:          
+    push rbp       ;push rbp saves the firmware's state
+    mov rbp, rsp   ;this copies the current value of rsp into rbp, it creates a fixed anchor point for the function
+    sub rsp, 48    ;by subtracthing 48 from the stack pointer, im taking 48 bytes of empty space on the stack
+    
+    mov [img_handle], rcx ; saves UEFI image handle at rcx
+    mov [sys_table], rdx  ; saves UEFI system table 
+
+    ;Get the memory map (Mandatory proof-of state befro exit)
+    lea rcx, [mem_map_size]
+    lea rdx, [mem_map_buffer]
+    lea r8, [mem_map_key]      ;why use lea instead of mov; in 64 bit UEFI program the firmware loads my bootloader into a random spot in memory every time
+    lea r9, [mem_descr_size]   ;this mean i could not hardcode the exact memory addresses. i have to write Position Independent Code (PIC)
+    lea rax, [mem_descr_ver]   ;
+    mov [rsp + 32], rax
+    call [rsi + OFFSET_GET_MEMORY_MAP]
+
+    ;Check if exit was successful
+    test rax, rax
+    jnz .failed
 
 
