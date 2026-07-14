@@ -55,16 +55,33 @@ ForgeOS_main:
     mov al, 0x03  ;8 bits, no parity, 1 stop bit
     out dx, al 
 
-    lea rsi, [kernel_msg]
-.print_loop:
-    lodsb 
-    or al, al
-    jz .kernel_halt
+    lea rsi, [kernel_msg]  ;Load message address
+.print_loop:     
+    lodsb                  ;read next character into AL
+    or al, al              ;is it the null terminator(0)
+    jz .kernel_halt        ;if yes, finish printing
 
-    mov dx, ox3F8
-    out dx, al 
-    jmp .print_loop
+    mov dx, ox3F8          ;COM1 Data port
+    out dx, al             ;Send character straight to serial hardware
+    jmp .print_loop        ;
 
 .kernel_halt:
-    hlt
+    hlt                    ;halt the cpu processor core safely
     jmp .kernel_halt
+
+; data
+section .data
+img_handle:     dq 0 
+sys_table:      dq 0
+boot_services:  dq 0
+
+mem_map_size:   dq 4096
+mem_map_key:    dq 0
+mem_descr_size: dq 0
+mem_descr_ver:  dq 0
+
+kernel_msg:     db "--ForgeOS--". 0x0D, 0x0A, 0 
+
+section .bss 
+align 16
+mem_map_buffer: resb 4096
