@@ -19,4 +19,15 @@ global efi_main
 ;this exports the label efi_main so the linker can 
 ;find it and tell the UEFI firmware exactly where our program begins
 
+efi_main:
+  push rbp     ;this saves the base pointer to preserve the firmware
+  mov rbp,rsp  ;this gives the os a fixed reference point for its local variables
+  sub rsp,48   ;this allocates exactly 48 bytes of empty space on the stack to 
+               ;guarantee the 32 byte shadow space and 16 byte alignment rules are met 
+
+  mov [img_handle], rcx ;this copies them in to RAM so they don't get over writen 
+  mov [sys_table], rdx
+
+  mov rsi, [rdx + OFFSET_BOOT_SERVICES] ;this finds the boot services pointer and moves it to rsi 
+  mov [boot_services], rsi ; this moves the boot services pointer to RAM at boot_services
 
