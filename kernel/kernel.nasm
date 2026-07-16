@@ -35,17 +35,27 @@
     pop rax
   %endmacro
 
-
-
-
 section .text 
 
 global div_error_handler
 global kernel_main
 
 kernel_main:
+
+  mov rax, div_error_handler     
+
+  mov [idt_table], ax            
+
+  shr rax, 16                   
+  mov [idt_table + 6], ax        
+
+  shr rax, 16                   
+  mov [idt_table + 8], eax       
+
+
   lidt [idtr_descriptor]
   sti
+
 .main_loop:
   hlt
   jmp .main_loop
@@ -64,14 +74,14 @@ div_error_handler:
 section .data
 
 idt_table:
-  dw (div_error_handler & 0xFFFF)
-  dw 0x08
-  db 0
-  db 0x8E
-  dw ((div_error_handler >> 16) & 0xFFFF)
-  dd (div_error_handler >> 32)
-  dd 0
+  dw 0x0000                      
+  dw 0x0008                      
+  db 0                           
+  db 0x8E                        
+  dw 0x0000                      
+  dd 0x00000000                  
+  dd 0x00000000                 
 
 idtr_descriptor:
-  dw 15
-  dq idt_table
+  dw 15                          
+  dq idt_table                
