@@ -4,7 +4,7 @@ LD = ld
 LDFLAGS = -m i386pep -T linker/linker.ld --subsystem 10 
 
 OUTPUT = BOOTX64.EFI 
-OBJS boot.o kernel.o 
+OBJS = boot.o kernel.o 
 
 all: $(OUTPUT)
 
