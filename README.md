@@ -19,6 +19,7 @@ A hobby operating system written completely from scratch.
 - 32 GB eMMC
 # ForgeOS v0 boot 
 <img width="3024" height="4032" alt="IMG_9584" src="https://github.com/user-attachments/assets/c0baa604-a0ae-40cd-b8c1-75fa2d848517" />
+---
 ## V0
   * No type of IO
   * Only one interrupt (div by 0)
