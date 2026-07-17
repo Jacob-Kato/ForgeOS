@@ -1,3 +1,5 @@
+BITS 64
+DEFAULT REL
   %macro save_state 0 
     push rax
     push rbx

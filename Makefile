@@ -1,7 +1,7 @@
 ASM = nasm 
 ASMFLAGS = -f win64
 LD = ld 
-LDFLAGS = -m i386pep -T linker/linker.ld --subsystem 10 
+LDFLAGS = -m i386pep --subsystem 10 -shared -Bsymbolic -e efi_main
 
 OUTPUT = BOOTX64.EFI 
 OBJS = boot.o kernel.o 
