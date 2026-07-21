@@ -44,7 +44,7 @@ global kernel_main
 
 kernel_main:
 
-  mov rax, div_error_handler     
+  lea rax, [div_error_handler]     
 
   mov [idt_table], ax            
 
@@ -52,8 +52,13 @@ kernel_main:
   mov [idt_table + 6], ax        
 
   shr rax, 16                   
-  mov [idt_table + 8], eax       
+  mov [idt_table + 8], eax
 
+  lea rax, [keyborad_handler]
+
+  mov [idt_table + 16], ax
+  shr rax, 16
+  mov [main_loop]
 
   lidt [idtr_descriptor]
   sti
@@ -61,6 +66,17 @@ kernel_main:
 .main_loop:
   hlt
   jmp .main_loop
+
+keyborad_handler:
+  save_state
+
+  in al, 0x60
+  mov [last_key], al
+  mov al, 0x20
+  out 0x20, al
+
+  load_state
+  iretq
 
 div_error_handler:
   save_state
@@ -76,14 +92,7 @@ div_error_handler:
 section .data
 
 idt_table:
-  dw 0x0000                      
-  dw 0x0008                      
-  db 0                           
-  db 0x8E                        
-  dw 0x0000                      
-  dd 0x00000000                  
-  dd 0x00000000                 
-
+  times 256 dq 0,0 
 idtr_descriptor:
-  dw 15                          
+  dw 4095                          
   dq idt_table                
