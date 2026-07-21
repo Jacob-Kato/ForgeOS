@@ -54,7 +54,7 @@ kernel_main:
   shr rax, 16                   
   mov [idt_table + 8], eax
 
-  lea rax, [keyborad_handler]
+  lea rax, [keyboard_handler]
 
   mov [idt_table + 16], ax
   shr rax, 16
@@ -67,7 +67,7 @@ kernel_main:
   hlt
   jmp .main_loop
 
-keyborad_handler:
+keyboard_handler:
   save_state
 
   in al, 0x60
