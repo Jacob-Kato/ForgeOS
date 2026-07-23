@@ -44,50 +44,12 @@ global kernel_main
 
 kernel_main:
 
-  lea rax, [div_error_handler]     
-
-  mov [idt_table], ax            
-
-  shr rax, 16                   
-  mov [idt_table + 6], ax        
-
-  shr rax, 16                   
-  mov [idt_table + 8], eax
-
-  lea rax, [keyboard_handler]
-
-  mov [idt_table + 16], ax
-  shr rax, 16
-  mov [main_loop]
-
   lidt [idtr_descriptor]
   sti
 
 .main_loop:
   hlt
   jmp .main_loop
-
-keyboard_handler:
-  save_state
-
-  in al, 0x60
-  mov [last_key], al
-  mov al, 0x20
-  out 0x20, al
-
-  load_state
-  iretq
-
-div_error_handler:
-  save_state
-
-  cli
-.panic:
-  hlt
-  jmp .panic
-
-  load_state
-  iretq 
 
 section .data
 
