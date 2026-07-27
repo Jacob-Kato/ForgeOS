@@ -62,10 +62,6 @@ global kernel_main
 global isr_stub_table
 
 kernel_main:
-
-  xor rcx, rcx
-  div 1, rcx
-
   lidt [idtr_descriptor]
   sti
 
@@ -78,6 +74,8 @@ isr_common_stub:
   jmp $
 
 section .data
+
+
 isr_stub_table:
 %assign i 0
 %rep 256
