@@ -63,12 +63,19 @@ global isr_stub_table
 
 kernel_main:
 
+  xor rcx, rcx
+  div 1, rcx
+
   lidt [idtr_descriptor]
   sti
 
 .main_loop:
   hlt
   jmp .main_loop
+
+isr_common_stub:
+  hlt
+  jmp $
 
 section .data
 isr_stub_table:
