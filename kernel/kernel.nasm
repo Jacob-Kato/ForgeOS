@@ -57,7 +57,7 @@ ISR_NOERRCODE 31
 
 section .text 
 
-global div_error_handler
+global isr_common_stub
 global kernel_main
 global isr_stub_table
 
