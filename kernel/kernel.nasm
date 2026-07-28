@@ -58,12 +58,21 @@ ISR_NOERRCODE 31
 section .text 
 
 global isr_common_stub
-global kernel_main
+global _start
 global isr_stub_table
+global idt_table 
+extern kernel_main
 
-kernel_main:
+_start:
+  call kernel_main
   lidt [idtr_descriptor]
   sti
+
+
+  mov rax, 100
+  xor rdx,rdx
+  xor rbx,rbx 
+  div rbx 
 
 .main_loop:
   hlt
