@@ -16,6 +16,7 @@ section .text
 ;this line is executable code not data or variables.
 
 global efi_main
+extern _start
 ;this exports the label efi_main so the linker can 
 ;find it and tell the UEFI firmware exactly where our program begins
 
@@ -50,7 +51,7 @@ efi_main:
   mov rdx, [mem_map_key]
   call [OFFSET_EXIT_BOOT_SERV + rsi]
 
-  cli
+  jmp _start
 
 halt:
   hlt
