@@ -64,7 +64,7 @@ global idt_table
 extern kernel_main
 
 _start:
-  mov rsp, rbp
+  mov rsp, kernel_stack_top
   call kernel_main
   lidt [idtr_descriptor]
   sti
@@ -85,7 +85,6 @@ isr_common_stub:
 
 section .data
 
-
 isr_stub_table:
 %assign i 0
 %rep 256
@@ -97,4 +96,9 @@ idt_table:
   times 256 dq 0,0 
 idtr_descriptor:
   dw 4095                          
-  dq idt_table                
+  dq idt_table    
+section .bss
+align 16
+kernel_stack:
+	resb 16384
+kernel_stack_top:
