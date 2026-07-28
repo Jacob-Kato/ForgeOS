@@ -64,6 +64,7 @@ global idt_table
 extern kernel_main
 
 _start:
+  mov rsp, rbp
   call kernel_main
   lidt [idtr_descriptor]
   sti
