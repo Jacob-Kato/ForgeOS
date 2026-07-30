@@ -22,7 +22,6 @@ A hobby operating system written completely from scratch.
 ---
 
 # ForgeOS v0 Initial Prototype 
-* <img width="3024" height="3024" alt="IMG_9584" src="https://github.com/user-attachments/assets/c0baa604-a0ae-40cd-b8c1-75fa2d848517" />
 
 - Booted under UEFI
 - Exited boot services
@@ -30,4 +29,24 @@ A hobby operating system written completely from scratch.
 - was not debugged to verify if div zero was caught
 
 # ForgeOS V0.1.0 -Interrupt structure
+
+Status: In Development 
+
+## New Features
+- Implemented a 256-entry Interrupt Descriptor Table (IDT)
+- Added assembly-generated ISR stub table
+- Added C-based `idt_set_gate()` implementation
+- Added `idt_init()` to populate every IDT entry
+- Connected C kernel initialization with assembly startup
+- Added IDTR descriptor and `lidt`
+- Established QEMU + GDB debugging workflow
+- Kernel now transitions:
+  UEFI → efi_main → _start → kernel_main
+
+### Current Goal
+Verify that CPU exceptions correctly dispatch through the IDT into the ISR common stub.
+
+
+
+
 
