@@ -10,6 +10,7 @@ A hobby operating system written completely from scratch.
 - Write my own bootloader
 - Write my own kernel
 - Eventually become self-hosting
+--- 
 
 ## Target Hardware
 
@@ -17,10 +18,16 @@ A hobby operating system written completely from scratch.
 - Intel Celeron N4000
 - 4 GB RAM
 - 32 GB eMMC
-# ForgeOS v0 boot 
-* <img width="3024" height="3024" alt="IMG_9584" src="https://github.com/user-attachments/assets/c0baa604-a0ae-40cd-b8c1-75fa2d848517" />
+
 ---
-## V0
-  * No type of IO
-  * Only one interrupt (div by 0)
+
+# ForgeOS v0 Initial Prototype 
+* <img width="3024" height="3024" alt="IMG_9584" src="https://github.com/user-attachments/assets/c0baa604-a0ae-40cd-b8c1-75fa2d848517" />
+
+- Booted under UEFI
+- Exited boot services
+- Tested CPU exception with div by zero
+- was not debugged to verify if div zero was caught
+
+# ForgeOS V0.1.0 -Interrupt structure
 
