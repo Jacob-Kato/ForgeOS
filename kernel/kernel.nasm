@@ -100,6 +100,7 @@ global _start
 global isr_stub_table
 global idt_table 
 extern kernel_main
+extern exception_handler
 
 _start:
   mov rsp, kernel_stack_top
@@ -119,6 +120,8 @@ _start:
 
 isr_common_stub:
   PUSHA
+  mov rcx,rsp
+  call exception_handler
 
   hlt
   jmp $

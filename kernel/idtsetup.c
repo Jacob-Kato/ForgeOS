@@ -14,6 +14,11 @@ struct idt_entry {
 #include <stdint.h>
 
 struct interrupt_frame {
+  uint64_t Error_Code;
+  uint64_t Vector;
+  uint64_t rip;
+  uint64_t cs;
+  uint64_t rflags;
   uint64_t r15;
   uint64_t r14;
   uint64_t r13;
@@ -42,6 +47,24 @@ void idt_set_gate(int vector, void *handler) {
   idt_table[vector].offset_mid = (addr >> 16) & 0xFFFF;
   idt_table[vector].offset_high = (addr >> 32) & 0xFFFFFFFF;
   idt_table[vector].reserved = 0;
+}
+
+void exception_handler(struct interrupt_frame *frame) {
+  switch (frame->Vector) {
+  case 0:
+    break;
+  case 6:
+    break;
+  case 13:
+    break;
+  case 14:
+    break;
+  default:
+    break;
+  }
+  while (1) {
+    __asm__ volatile("hlt");
+  }
 }
 
 void idt_init(void) {
