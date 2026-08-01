@@ -122,6 +122,9 @@ isr_common_stub:
   PUSHA
   mov rcx,rsp
   call exception_handler
+  POPA
+  add rsp,16
+  iretq 
 
   hlt
   jmp $

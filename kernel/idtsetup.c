@@ -14,26 +14,26 @@ struct idt_entry {
 #include <stdint.h>
 
 struct interrupt_frame {
-  uint64_t Error_Code;
+  uint64_t RAX;
+  uint64_t RBX;
+  uint64_t RCX;
+  uint64_t RDX;
+  uint64_t RSI;
+  uint64_t RDI;
+  uint64_t RBP;
+  uint64_t R8;
+  uint64_t R9;
+  uint64_t R10;
+  uint64_t R11;
+  uint64_t R12;
+  uint64_t R13;
+  uint64_t R14;
+  uint64_t R15;
   uint64_t Vector;
-  uint64_t rip;
-  uint64_t cs;
-  uint64_t rflags;
-  uint64_t r15;
-  uint64_t r14;
-  uint64_t r13;
-  uint64_t r12;
-  uint64_t r11;
-  uint64_t r10;
-  uint64_t r9;
-  uint64_t r8;
-  uint64_t rbp;
-  uint64_t rdi;
-  uint64_t rsi;
-  uint64_t rdx;
-  uint64_t rcx;
-  uint64_t rbx;
-  uint64_t rax;
+  uint64_t Error_Code;
+  uint64_t RIP;
+  uint64_t CS;
+  uint64_t RFLAGS;
 };
 extern struct idt_entry idt_table[256];
 extern void *isr_stub_table[256];
