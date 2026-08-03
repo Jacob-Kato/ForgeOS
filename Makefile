@@ -2,8 +2,8 @@ ASM = nasm
 CC = x86_64-w64-mingw32-gcc
 LD = ld
 
-ASMFLAGS = -f win64
-CFLAGS = -ffreestanding -c -Wall -Wextra
+ASMFLAGS = -f win64 -g 
+CFLAGS = -g -O0 -ffreestanding -c -Wall -Wextra
 
 LDFLAGS = -m i386pep --subsystem 10 -shared -Bsymbolic -e efi_main
 

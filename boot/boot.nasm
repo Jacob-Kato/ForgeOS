@@ -50,7 +50,6 @@ efi_main:
   mov rcx, [img_handle]
   mov rdx, [mem_map_key]
   call [OFFSET_EXIT_BOOT_SERV + rsi]
-
   jmp _start
 
 halt:
