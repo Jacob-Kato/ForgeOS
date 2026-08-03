@@ -107,7 +107,8 @@ _start:
   call kernel_main
   lidt [idtr_descriptor]
   sti
-
+  
+	
 
   mov rax, 100
   xor rdx,rdx

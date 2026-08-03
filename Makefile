@@ -9,7 +9,7 @@ LDFLAGS = -m i386pep --subsystem 10 -shared -Bsymbolic -e efi_main
 
 OUTPUT = BOOTX64.EFI
 
-OBJS = boot.o kernel.o idtsetup.o
+OBJS = boot.o kernel.o idtsetup.o init_com1.o
 
 all: $(OUTPUT)
 
@@ -23,6 +23,9 @@ kernel.o: kernel/kernel.nasm
 	$(ASM) $(ASMFLAGS) $< -o $@
 
 idtsetup.o: kernel/idtsetup.c
+	$(CC) $(CFLAGS) $< -o $@
+	
+init_com1.o: kernel/init_com1.c
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:

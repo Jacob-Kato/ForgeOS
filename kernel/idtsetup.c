@@ -1,3 +1,4 @@
+#include "init_com1.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -10,8 +11,6 @@ struct idt_entry {
   uint32_t offset_high;
   uint32_t reserved;
 };
-
-#include <stdint.h>
 
 struct interrupt_frame {
   uint64_t RAX;
@@ -52,6 +51,7 @@ void idt_set_gate(int vector, void *handler) {
 void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
   case 0:
+    serial_write_byte('A');
     break;
   case 6:
     break;
@@ -73,4 +73,11 @@ void idt_init(void) {
   }
 }
 
-void kernel_main(void) { idt_init(); }
+void kernel_main(void) {
+  init_serial();
+  idt_init();
+  serial_write_byte('X');
+  while (1) {
+    __asm__ volatile("hlt");
+  }
+}
