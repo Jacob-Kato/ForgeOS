@@ -121,8 +121,7 @@ _start:
 
 isr_common_stub:
   mov al, 'A'
-  out 0x3F*=8, al
-
+  out 0x3F8, al
 
   PUSHA
   mov rcx,rsp
