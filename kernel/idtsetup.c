@@ -77,7 +77,4 @@ void kernel_main(void) {
   init_serial();
   idt_init();
   serial_write_byte('X');
-  while (1) {
-    __asm__ volatile("hlt");
-  }
 }

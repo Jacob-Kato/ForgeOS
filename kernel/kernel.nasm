@@ -120,6 +120,10 @@ _start:
   jmp .main_loop
 
 isr_common_stub:
+  mov al, 'A'
+  out 0x3F*=8, al
+
+
   PUSHA
   mov rcx,rsp
   call exception_handler
