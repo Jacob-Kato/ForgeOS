@@ -68,6 +68,11 @@ void exception_handler(struct interrupt_frame *frame) {
 }
 
 void idt_init(void) {
+  serial_write_byte('-');
+  serial_write_byte('i');
+  serial_write_byte('d');
+  serial_write_byte('t');
+
   for (int i = 0; i < 256; i++) {
     idt_set_gate(i, isr_stub_table[i]);
   }
