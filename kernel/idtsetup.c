@@ -49,7 +49,7 @@ extern void *isr_stub_table[256];
 void idt_set_gate(int vector, void *handler) {
   uintptr_t addr = (uintptr_t)handler;
   idt_table[vector].offset_low = addr & 0xFFFF;
-  idt_table[vector].selector = 0x08;
+  idt_table[vector].selector = 0x38;
   idt_table[vector].ist = 0;
   idt_table[vector].type_attr = 0x8E;
   idt_table[vector].offset_mid = (addr >> 16) & 0xFFFF;
@@ -101,14 +101,33 @@ void kernel_main(void) {
     serial_write_byte('Y');
   else
     serial_write_byte('N');
+    
+  uintptr_t addr = (uintptr_t)isr_stub_table[0];
 
-  if (idtr_copy.base == (uintptr_t)idt_table)
-    serial_write_byte('B');
+  if ((addr & 0xFFFF) == idt_table[0].offset_low)
+    serial_write_byte('L');
   else
-    serial_write_byte('b');
+    serial_write_byte('l');
+
+  if (((addr >> 16) & 0xFFFF) == idt_table[0].offset_mid)
+    serial_write_byte('M');
+  else
+    serial_write_byte('m');
+
+  if (((addr >> 32) & 0xFFFFFFFF) == idt_table[0].offset_high)
+    serial_write_byte('H');
+  else
+    serial_write_byte('h');
 
   serial_write_byte('-');
   serial_write_byte('k');
   serial_write_byte('m');
   serial_write_byte('-');
+}
+
+void b_check(){
+  if (idtr_copy.base == (uintptr_t)idt_table)
+    serial_write_byte('B');
+  else
+    serial_write_byte('b');
 }

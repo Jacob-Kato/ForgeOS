@@ -98,10 +98,12 @@ section .text
 global isr_common_stub
 global _start
 global isr_stub_table
-global idt_table 
+global idt_table
+global idtr_copy
 extern kernel_main
 extern exception_handler
 extern serial_write_byte 
+extern b_check
 
 _start:
   mov rsp, kernel_stack_top
@@ -112,11 +114,14 @@ _start:
   
   lidt [idtr_descriptor]
   sidt [idtr_copy]
+  call b_check
   mov al, '2'
   out dx, al
   
   sti
-  mov al, '3'
+  mov ax, cs
+  add al, '0'
+  mov dx, 0x3F8
   out dx, al
   
   mov rax, 100
@@ -157,18 +162,16 @@ idt_table:
 idtr_descriptor:
   dw 4095                          
   dq idt_table
+  
 
 
 section .bss
 align 16
 
 idtr_copy:
-  resb 10 
-
-
-
-
-align 16
+  	resb 10 
+  	
 kernel_stack:
 	resb 16384
+	
 kernel_stack_top:
