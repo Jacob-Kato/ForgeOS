@@ -12,6 +12,11 @@ struct idt_entry {
   uint32_t reserved;
 };
 
+struct idtr {
+  uint16_t limit;
+  uint64_t base;
+} __attribute__((packed));
+
 struct interrupt_frame {
   uint64_t RAX;
   uint64_t RBX;
@@ -33,7 +38,11 @@ struct interrupt_frame {
   uint64_t RIP;
   uint64_t CS;
   uint64_t RFLAGS;
+  uint64_t RSP;
+  uint64_t SS;
 };
+
+extern struct idtr idtr_copy;
 extern struct idt_entry idt_table[256];
 extern void *isr_stub_table[256];
 
@@ -63,6 +72,7 @@ void exception_handler(struct interrupt_frame *frame) {
     break;
   }
   while (1) {
+    serial_write_byte('O');
     __asm__ volatile("hlt");
   }
 }
@@ -72,6 +82,7 @@ void idt_init(void) {
   serial_write_byte('i');
   serial_write_byte('d');
   serial_write_byte('t');
+  serial_write_byte('-');
 
   for (int i = 0; i < 256; i++) {
     idt_set_gate(i, isr_stub_table[i]);
@@ -81,5 +92,23 @@ void idt_init(void) {
 void kernel_main(void) {
   init_serial();
   idt_init();
-  serial_write_byte('X');
+
+  uintptr_t idt_addr = (uintptr_t)idt_table[0].offset_low |
+                       ((uintptr_t)idt_table[0].offset_mid << 16) |
+                       ((uintptr_t)idt_table[0].offset_high << 32);
+
+  if (idt_addr == (uintptr_t)isr_stub_table[0])
+    serial_write_byte('Y');
+  else
+    serial_write_byte('N');
+
+  if (idtr_copy.base == (uintptr_t)idt_table)
+    serial_write_byte('B');
+  else
+    serial_write_byte('b');
+
+  serial_write_byte('-');
+  serial_write_byte('k');
+  serial_write_byte('m');
+  serial_write_byte('-');
 }
