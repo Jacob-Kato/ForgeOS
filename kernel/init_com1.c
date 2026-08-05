@@ -28,11 +28,11 @@ void serial_wait() {
   while ((inb(COM1_LSR) & 0x20) == 0)
     ;
 }
-void serial_write_byte(unsigned char *byte) {
-  serial_wait();
-  int endptr = sizeof(byte);
-  for (int i = 0; i < endptr; i++) {
-    outb(COM1, byte[i]);
+void serial_write_byte( char *byte) {
+  while(*byte != '\0'){
+    serial_wait();
+    outb(COM1, *byte);
+    byte++;
   }
 }
 

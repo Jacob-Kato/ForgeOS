@@ -99,31 +99,17 @@ global isr_common_stub
 global _start
 global isr_stub_table
 global idt_table
-global idtr_copy
 extern kernel_main
 extern exception_handler
 extern serial_write_byte 
-extern b_check
 
 _start:
   mov rsp, kernel_stack_top
   call kernel_main
-  mov dx,0x3F8
-  mov al, '1'
-  out dx, al
-  
   lidt [idtr_descriptor]
-  sidt [idtr_copy]
-  call b_check
-  mov al, '2'
-  out dx, al
   
   sti
-  mov ax, cs
-  add al, '0'
-  mov dx, 0x3F8
-  out dx, al
-  
+
   mov rax, 100
   xor rdx,rdx
   xor rbx,rbx 
@@ -134,10 +120,6 @@ _start:
   jmp .main_loop
 
 isr_common_stub:
-  mov dx, 0x3F8
-  mov al, 'C'
-  out dx, al
-
   PUSHA
   mov rcx,rsp
   call exception_handler
@@ -167,9 +149,6 @@ idtr_descriptor:
 
 section .bss
 align 16
-
-idtr_copy:
-  	resb 10 
   	
 kernel_stack:
 	resb 16384
