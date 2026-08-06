@@ -5,6 +5,6 @@
 
 void serial_configure(void);
 void serial_wait(void);
-void serial_write_byte( char *byte);
+void serial_write(char *byte);
 void init_serial();
 #endif // !SERIAL_H

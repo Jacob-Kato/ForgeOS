@@ -54,7 +54,7 @@ void idt_set_gate(int vector, void *handler) {
 void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
   case 0:
-    serial_write_byte("error div by zero");
+    serial_write("-Error div by zero- \n");
     break;
   case 6:
     break;
@@ -66,7 +66,7 @@ void exception_handler(struct interrupt_frame *frame) {
     break;
   }
   while (1) {
-    serial_write_byte("O");
+    serial_write("O");
     __asm__ volatile("hlt");
   }
 }
@@ -81,5 +81,3 @@ void kernel_main(void) {
   init_serial();
   idt_init();
 }
-
-
