@@ -1,3 +1,5 @@
+#include "init_com1.h"
+#include <stdint.h>
 #define COM1 0x3F8
 #define COM1_LSR (COM1 + 5)
 #define COM1_FCR (COM1 + 2)
@@ -36,4 +38,20 @@ void serial_write(char *byte) {
   }
 }
 
+void serial_write_hex_digit(uint8_t value) {
+  serial_wait();
+  uint8_t low4bit = value & 0x0F;
+  uint8_t ascii_char;
+  if (low4bit < 10)
+    ascii_char = '0' + low4bit;
+  else
+    ascii_char = 'A' + (low4bit - 10);
+
+  outb(COM1, ascii_char);
+}
+
+void serial_write_hex(uint8_t byte) {
+  serial_write_hex_digit(byte >> 4);
+  serial_write_hex_digit(byte);
+}
 void init_serial() { serial_configure(); }

@@ -55,6 +55,17 @@ void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
   case 0:
     serial_write("-Error div by zero- \n");
+    serial_write("Error Code: ");
+    serial_write_hex(frame->Error_Code);
+    serial_write("\n");
+    serial_write("Registers");
+    serial_write("\n");
+    serial_write("RIP: ");
+    serial_write_hex(frame->RIP);
+    serial_write("\n");
+    serial_write("RFLAGS: ");
+    serial_write_hex(frame->RFLAGS);
+
     break;
   case 6:
     break;
@@ -66,7 +77,7 @@ void exception_handler(struct interrupt_frame *frame) {
     break;
   }
   while (1) {
-    serial_write("O");
+    serial_write("\nHold\n");
     __asm__ volatile("hlt");
   }
 }
