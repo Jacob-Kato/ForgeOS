@@ -1,6 +1,7 @@
 #include "init_com1.h"
 #include <stddef.h>
 #include <stdint.h>
+#define kernel_cs 0x38
 
 struct idt_entry {
   uint16_t offset_low;
@@ -43,7 +44,7 @@ extern void *isr_stub_table[256];
 void idt_set_gate(int vector, void *handler) {
   uintptr_t addr = (uintptr_t)handler;
   idt_table[vector].offset_low = addr & 0xFFFF;
-  idt_table[vector].selector = 0x38;
+  idt_table[vector].selector = kernel_cs;
   idt_table[vector].ist = 0;
   idt_table[vector].type_attr = 0x8E;
   idt_table[vector].offset_mid = (addr >> 16) & 0xFFFF;
