@@ -6,7 +6,7 @@
 #define gate_type 0x8E
 #define div_by0 0
 #define invalid_opcode 6
-#define gp_fault 13
+#define MSR_fault 13
 
 struct idt_entry {
   uint16_t offset_low;
@@ -105,7 +105,7 @@ void exception_handler(struct interrupt_frame *frame) {
   case invalid_opcode:
     explicit_instruction_error(frame);
     break;
-  case gp_fault:
+  case MSR_fault:
     general_protection_error(frame);
     break;
   case 14:
