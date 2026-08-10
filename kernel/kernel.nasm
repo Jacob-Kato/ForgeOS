@@ -4,6 +4,7 @@ DEFAULT REL
 %define total_vector 256 
 %define descriptor_size 4095
 %define kernel_size 16384
+%define COM1 0x3F8
 
 %macro PUSHA 0 
   push r15
@@ -105,6 +106,7 @@ global _start
 global isr_stub_table
 global idt_table
 global error_test
+global main_loop
 extern kernel_main
 extern exception_handler
 extern serial_write_byte 
@@ -122,23 +124,30 @@ error_test:
   clc
   ud2 
 
-.main_loop:
+main_loop:
   hlt
-  jmp .main_loop
+  jmp main_loop
 
 isr_common_stub:
-  
+  mov dx, COM1
+  mov al, '1'
+  out dx, al
+
+
   PUSHA
   mov rax, cr2
   push rax
   mov rcx,rsp
+  mov al, '2'
+  out dx, al 
+  
   call exception_handler
   POPA
   add rsp,skip_bytes
   iretq 
 
   hlt
-  jmp $
+  jmp main_loop
 
 section .data
 

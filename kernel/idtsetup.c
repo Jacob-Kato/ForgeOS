@@ -106,6 +106,7 @@ void idt_init(void) {
 }
 
 void kernel_main(void) {
+  serial_write("kernel_main\n");
   init_serial();
   idt_init();
 }
