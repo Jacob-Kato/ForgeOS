@@ -125,6 +125,9 @@ error_test:
   ud2 
 
 main_loop:
+  mov dx,COM1
+  mov al, '5'
+  out dx, al 
   hlt
   jmp main_loop
 
@@ -138,13 +141,21 @@ isr_common_stub:
   mov rax, cr2
   push rax
   mov rcx,rsp
+
+
   mov al, '2'
   out dx, al 
   
   call exception_handler
+
+  mov al, '3'
+  out dx, al 
   POPA
   add rsp,skip_bytes
   iretq 
+
+  mov al, '4'
+  out dx, al
 
   hlt
   jmp main_loop
