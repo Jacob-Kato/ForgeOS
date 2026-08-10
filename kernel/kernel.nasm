@@ -1,6 +1,6 @@
 BITS 64  
 DEFAULT REL
-%define skip_bytes 24
+%define skip_bytes 16 
 %define total_vector 256 
 %define descriptor_size 4095
 %define kernel_size 16384
@@ -119,9 +119,10 @@ _start:
 
 
 error_test:
-  xor rax, rax
   clc
-  xor rcx, rcx
+  mov rax, 0xAAAAAAAAAAAAAAAA
+  mov rbx, 0xBBBBBBBBBBBBBBBB
+  mov rcx, 0xDEADBEEF
   xor rdx, rdx
   wrmsr
 
@@ -136,6 +137,7 @@ isr_common_stub:
   mov rcx,rsp
 
   call exception_handler
+  pop rax
   POPA
   add rsp,skip_bytes
   iretq 

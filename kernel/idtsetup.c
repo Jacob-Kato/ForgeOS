@@ -78,13 +78,16 @@ void explicit_instruction_error(struct interrupt_frame *frame) {
   frame->RIP += 2;
 }
 void general_protection_error(struct interrupt_frame *frame) {
+  nonreturn_error(frame);
   const uint16_t RDMSR = 0x320F;
   const uint16_t WRMSR = 0x300F;
   const uint64_t CARRY_FLAG_MASK = 0x1ULL;
   const uint64_t ERROR_STATUS_CODE = 0xFFFFFFFFFFFFFFFFULL;
   const uint8_t MSR_INSTRUCTION_SIZE = 2;
-  nonreturn_error(frame);
   uint64_t segment_selector = frame->Error_Code >> 3;
+  serial_write("Bottom 3 flag bits: ");
+  serial_write_hex_digit(segment_selector);
+  serial_write("\n");
   uint16_t *opcode = (uint16_t *)frame->RIP;
   if (*opcode == RDMSR || *opcode == WRMSR) {
     frame->RAX = 0;
