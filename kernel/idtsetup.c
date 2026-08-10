@@ -88,6 +88,7 @@ void exception_handler(struct interrupt_frame *frame) {
     nonreturn_error(frame);
     break;
   case 6:
+    serial_write("exception handler");
     return_error(frame);
     break;
   case 13:
