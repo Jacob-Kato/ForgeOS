@@ -30,7 +30,7 @@ void serial_wait() {
   while ((inb(COM1_LSR) & 0x20) == 0)
     ;
 }
-void serial_write(char *byte) {
+void serial_write(const char *byte) {
   while (*byte != '\0') {
     serial_wait();
     outb(COM1, *byte);
@@ -38,7 +38,7 @@ void serial_write(char *byte) {
   }
 }
 
-void serial_write_hex_digit(uint8_t value) {
+void serial_write_hex_digit(const uint8_t value) {
   serial_wait();
   uint8_t low4bit = value & 0x0F;
   uint8_t ascii_char;
