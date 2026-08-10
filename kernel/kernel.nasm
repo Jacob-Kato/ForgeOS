@@ -1,5 +1,10 @@
-BITS 64
+BITS 64  
 DEFAULT REL
+%define skip_bytes 24
+%define total_vector 256 
+%define descriptor_size 4095
+%define kernel_size 16384
+
 %macro PUSHA 0 
   push r15
   push r14
@@ -99,6 +104,7 @@ global isr_common_stub
 global _start
 global isr_stub_table
 global idt_table
+global div_test
 extern kernel_main
 extern exception_handler
 extern serial_write_byte 
@@ -110,6 +116,7 @@ _start:
   
   sti
 
+div_test:
   mov rax, 100
   xor rdx,rdx
   xor rbx,rbx 
@@ -121,10 +128,12 @@ _start:
 
 isr_common_stub:
   PUSHA
+  mov rax, cr2
+  push rax
   mov rcx,rsp
   call exception_handler
   POPA
-  add rsp,16
+  add rsp,skip_bytes
   iretq 
 
   hlt
@@ -134,15 +143,15 @@ section .data
 
 isr_stub_table:
 %assign i 0
-%rep 256
+%rep total_vector
   dq isr%+i
 %assign i i+1
 %endrep
 
 idt_table:
-  times 256 dq 0,0 
+  times total_vector  dq 0,0 
 idtr_descriptor:
-  dw 4095                          
+  dw descriptor_size
   dq idt_table
   
 
@@ -151,6 +160,6 @@ section .bss
 align 16
   	
 kernel_stack:
-	resb 16384
+	resb kernel_size
 	
 kernel_stack_top:

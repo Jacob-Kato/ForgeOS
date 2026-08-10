@@ -1,7 +1,9 @@
-#include "init_com1.h"
+#include "initcom1.h"
 #include <stddef.h>
 #include <stdint.h>
 #define kernel_cs 0x38
+#define total_vector 256
+#define gate_type 0x8E
 
 struct idt_entry {
   uint16_t offset_low;
@@ -14,6 +16,7 @@ struct idt_entry {
 };
 
 struct interrupt_frame {
+  uint64_t CR2;
   uint64_t RAX;
   uint64_t RBX;
   uint64_t RCX;
@@ -38,15 +41,15 @@ struct interrupt_frame {
   uint64_t SS;
 };
 
-extern struct idt_entry idt_table[256];
-extern void *isr_stub_table[256];
+extern struct idt_entry idt_table[total_vector];
+extern void *isr_stub_table[total_vector];
 
 void idt_set_gate(int vector, void *handler) {
   uintptr_t addr = (uintptr_t)handler;
   idt_table[vector].offset_low = addr & 0xFFFF;
   idt_table[vector].selector = kernel_cs;
   idt_table[vector].ist = 0;
-  idt_table[vector].type_attr = 0x8E;
+  idt_table[vector].type_attr = gate_type;
   idt_table[vector].offset_mid = (addr >> 16) & 0xFFFF;
   idt_table[vector].offset_high = (addr >> 32) & 0xFFFFFFFF;
   idt_table[vector].reserved = 0;
@@ -84,7 +87,7 @@ void exception_handler(struct interrupt_frame *frame) {
 }
 
 void idt_init(void) {
-  for (int i = 0; i < 256; i++) {
+  for (int i = 0; i < total_vector; i++) {
     idt_set_gate(i, isr_stub_table[i]);
   }
 }
