@@ -4,6 +4,7 @@
 #define kernel_cs 0x38
 #define total_vector 256
 #define gate_type 0x8E
+#define div_by0 0
 
 struct idt_entry {
   uint16_t offset_low;
@@ -55,23 +56,39 @@ void idt_set_gate(int vector, void *handler) {
   idt_table[vector].reserved = 0;
 }
 
+void nonreturn_error(const struct interrupt_frame *frame) {
+  if (!frame)
+    return;
+  serial_write("Error Code: ");
+  serial_write_hex(frame->Error_Code);
+  serial_write("\n");
+  serial_write("Registers");
+  serial_write("\n");
+  serial_write("RIP: ");
+  serial_write_hex(frame->RIP);
+  serial_write("\n");
+  serial_write("RFLAGS: ");
+  serial_write_hex(frame->RFLAGS);
+}
+
+void return_error(struct interrupt_frame *frame) {
+  if (!frame)
+    serial_write("Invalid frame ptr");
+  return;
+  serial_write("Error Code: ");
+  serial_write_hex(frame->Error_Code);
+  serial_write("\n");
+  frame->RFLAGS |= 0x1ULL;
+  frame->RIP += 2;
+}
+
 void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
-  case 0:
-    serial_write("-Error div by zero- \n");
-    serial_write("Error Code: ");
-    serial_write_hex(frame->Error_Code);
-    serial_write("\n");
-    serial_write("Registers");
-    serial_write("\n");
-    serial_write("RIP: ");
-    serial_write_hex(frame->RIP);
-    serial_write("\n");
-    serial_write("RFLAGS: ");
-    serial_write_hex(frame->RFLAGS);
-
+  case div_by0:
+    nonreturn_error(frame);
     break;
   case 6:
+    return_error(frame);
     break;
   case 13:
     break;
@@ -79,10 +96,6 @@ void exception_handler(struct interrupt_frame *frame) {
     break;
   default:
     break;
-  }
-  while (1) {
-    serial_write("\nHold\n");
-    __asm__ volatile("hlt");
   }
 }
 

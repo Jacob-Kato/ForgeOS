@@ -1,4 +1,4 @@
-#include "init_com1.h"
+#include "initcom1.h"
 #include <stdint.h>
 #define COM1 0x3F8
 #define COM1_LSR (COM1 + 5)

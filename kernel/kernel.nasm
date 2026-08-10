@@ -104,7 +104,7 @@ global isr_common_stub
 global _start
 global isr_stub_table
 global idt_table
-global div_test
+global error_test
 extern kernel_main
 extern exception_handler
 extern serial_write_byte 
@@ -116,17 +116,18 @@ _start:
   
   sti
 
-div_test:
-  mov rax, 100
-  xor rdx,rdx
-  xor rbx,rbx 
-  div rbx 
+
+error_test:
+  xor rax, rax
+  clc
+  ud2 
 
 .main_loop:
   hlt
   jmp .main_loop
 
 isr_common_stub:
+  
   PUSHA
   mov rax, cr2
   push rax
