@@ -72,9 +72,6 @@ void nonreturn_error(const struct interrupt_frame *frame) {
 }
 
 void return_error(struct interrupt_frame *frame) {
-  if (!frame)
-    serial_write("Invalid frame ptr");
-  return;
   serial_write("Error Code: ");
   serial_write_hex(frame->Error_Code);
   serial_write("\n");
@@ -88,7 +85,10 @@ void exception_handler(struct interrupt_frame *frame) {
     nonreturn_error(frame);
     break;
   case 6:
-    serial_write("exception handler");
+    if (!frame)
+      serial_write("null frame");
+    else
+      serial_write("frame is all good ");
     return_error(frame);
     break;
   case 13:

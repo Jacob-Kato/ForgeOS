@@ -147,9 +147,6 @@ isr_common_stub:
   out dx, al 
   
   call exception_handler
-
-  mov al, '3'
-  out dx, al 
   POPA
   add rsp,skip_bytes
   iretq 
