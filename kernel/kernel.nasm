@@ -109,8 +109,7 @@ global error_test
 global main_loop
 extern kernel_main
 extern exception_handler
-extern serial_write_byte 
-
+extern main_c 
 _start:
   mov rsp, kernel_stack_top
   call kernel_main
@@ -122,14 +121,12 @@ _start:
 error_test:
   xor rax, rax
   clc
-  ud2 
+  xor rcx, rcx
+  xor rdx, rdx
+  wrmsr
 
-main_loop:
-  mov dx,COM1
-  mov al, 'm'
-  out dx, al 
-  hlt
-  jmp main_loop
+
+call main_c 
 
 isr_common_stub:
 
@@ -144,7 +141,7 @@ isr_common_stub:
   iretq 
 
   hlt
-  jmp main_loop
+  call main_c 
 
 section .data
 

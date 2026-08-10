@@ -6,6 +6,7 @@
 #define gate_type 0x8E
 #define div_by0 0
 #define invalid_opcode 6
+#define gp_fault 13
 
 struct idt_entry {
   uint16_t offset_low;
@@ -58,10 +59,11 @@ void idt_set_gate(int vector, void *handler) {
 }
 
 void nonreturn_error(const struct interrupt_frame *frame) {
+  serial_write("Vector: ");
+  serial_write_hex(frame->Vector);
+  serial_write("\n");
   serial_write("Error Code: ");
   serial_write_hex(frame->Error_Code);
-  serial_write("\n");
-  serial_write("Registers");
   serial_write("\n");
   serial_write("RIP: ");
   serial_write_hex(frame->RIP);
@@ -70,16 +72,29 @@ void nonreturn_error(const struct interrupt_frame *frame) {
   serial_write_hex(frame->RFLAGS);
 }
 
-void return_error(struct interrupt_frame *frame) {
-  serial_write("Vector: ");
-  serial_write("\n");
-  serial_write_hex(frame->Vector);
-  serial_write("\n");
-  serial_write("Error Code: ");
-  serial_write_hex(frame->Error_Code);
-  serial_write("\n");
+void explicit_instruction_error(struct interrupt_frame *frame) {
+  nonreturn_error(frame);
   frame->RFLAGS |= 0x1ULL;
   frame->RIP += 2;
+}
+void general_protection_error(struct interrupt_frame *frame) {
+  const uint16_t RDMSR = 0x320F;
+  const uint16_t WRMSR = 0x300F;
+  const uint64_t CARRY_FLAG_MASK = 0x1ULL;
+  const uint64_t ERROR_STATUS_CODE = 0xFFFFFFFFFFFFFFFFULL;
+  const uint8_t MSR_INSTRUCTION_SIZE = 2;
+  nonreturn_error(frame);
+  uint64_t segment_selector = frame->Error_Code >> 3;
+  uint16_t *opcode = (uint16_t *)frame->RIP;
+  if (*opcode == RDMSR || *opcode == WRMSR) {
+    frame->RAX = 0;
+    frame->RFLAGS &= ~CARRY_FLAG_MASK;
+    frame->RIP += MSR_INSTRUCTION_SIZE;
+    return;
+  }
+  frame->RAX = ERROR_STATUS_CODE;
+  frame->RFLAGS |= CARRY_FLAG_MASK;
+  frame->RIP += MSR_INSTRUCTION_SIZE;
 }
 
 void exception_handler(struct interrupt_frame *frame) {
@@ -88,9 +103,10 @@ void exception_handler(struct interrupt_frame *frame) {
     nonreturn_error(frame);
     break;
   case invalid_opcode:
-    return_error(frame);
+    explicit_instruction_error(frame);
     break;
-  case 13:
+  case gp_fault:
+    general_protection_error(frame);
     break;
   case 14:
     break;
