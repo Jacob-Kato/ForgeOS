@@ -57,8 +57,6 @@ void idt_set_gate(int vector, void *handler) {
 }
 
 void nonreturn_error(const struct interrupt_frame *frame) {
-  if (!frame)
-    return;
   serial_write("Error Code: ");
   serial_write_hex(frame->Error_Code);
   serial_write("\n");
@@ -72,6 +70,10 @@ void nonreturn_error(const struct interrupt_frame *frame) {
 }
 
 void return_error(struct interrupt_frame *frame) {
+  serial_write("Vector: ");
+  serial_write("\n");
+  serial_write_hex(frame->Vector);
+  serial_write("\n");
   serial_write("Error Code: ");
   serial_write_hex(frame->Error_Code);
   serial_write("\n");
@@ -85,10 +87,6 @@ void exception_handler(struct interrupt_frame *frame) {
     nonreturn_error(frame);
     break;
   case 6:
-    if (!frame)
-      serial_write("null frame");
-    else
-      serial_write("frame is all good ");
     return_error(frame);
     break;
   case 13:

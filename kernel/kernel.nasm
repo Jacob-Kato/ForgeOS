@@ -126,33 +126,22 @@ error_test:
 
 main_loop:
   mov dx,COM1
-  mov al, '5'
+  mov al, 'm'
   out dx, al 
   hlt
   jmp main_loop
 
 isr_common_stub:
-  mov dx, COM1
-  mov al, '1'
-  out dx, al
-
 
   PUSHA
   mov rax, cr2
   push rax
   mov rcx,rsp
 
-
-  mov al, '2'
-  out dx, al 
-  
   call exception_handler
   POPA
   add rsp,skip_bytes
   iretq 
-
-  mov al, '4'
-  out dx, al
 
   hlt
   jmp main_loop
