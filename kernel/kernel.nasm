@@ -6,6 +6,12 @@ DEFAULT REL
 %define kernel_size 16384
 %define COM1 0x3F8
 
+%macro write_byte 1
+  mov dx, COM1
+  mov al, %1
+  out dx, al
+%endmacro
+
 %macro PUSHA 0 
   push r15
   push r14
@@ -119,6 +125,7 @@ _start:
 
 
 error_test:
+write_byte 'e'
   clc
   mov rax, 0xAAAAAAAAAAAAAAAA
   mov rbx, 0xBBBBBBBBBBBBBBBB
@@ -130,6 +137,7 @@ error_test:
 call main_c 
 
 isr_common_stub:
+  write_byte 'c'
 
   PUSHA
   mov rax, cr2

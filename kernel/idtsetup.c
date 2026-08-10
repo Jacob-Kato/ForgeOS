@@ -109,6 +109,7 @@ void exception_handler(struct interrupt_frame *frame) {
     explicit_instruction_error(frame);
     break;
   case MSR_fault:
+    serial_write("MSR_fault");
     general_protection_error(frame);
     break;
   case 14:
