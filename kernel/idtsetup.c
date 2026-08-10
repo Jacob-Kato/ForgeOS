@@ -5,6 +5,7 @@
 #define total_vector 256
 #define gate_type 0x8E
 #define div_by0 0
+#define invalid_opcode 6
 
 struct idt_entry {
   uint16_t offset_low;
@@ -86,7 +87,7 @@ void exception_handler(struct interrupt_frame *frame) {
   case div_by0:
     nonreturn_error(frame);
     break;
-  case 6:
+  case invalid_opcode:
     return_error(frame);
     break;
   case 13:

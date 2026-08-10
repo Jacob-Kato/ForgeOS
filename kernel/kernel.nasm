@@ -45,7 +45,7 @@ DEFAULT REL
 %macro ISR_NOERRCODE 1
   global isr%1
   isr%1:
-    push 0 
+    push %1
     push %1
     jmp isr_common_stub
 %endmacro
