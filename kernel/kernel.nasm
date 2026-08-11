@@ -125,7 +125,6 @@ _start:
 
 
 error_test:
-write_byte 'e'
   clc
   mov rax, 0xAAAAAAAAAAAAAAAA
   mov rbx, 0xBBBBBBBBBBBBBBBB
