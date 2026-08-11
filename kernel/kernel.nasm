@@ -124,14 +124,16 @@ _start:
   sti
 
 
-error_test:
+  error_test:
     mov rcx, 0xDEADBEEF    
     xor rdx, rdx          
     xor rax, rax           
     wrmsr                   
+    mov rax, 1 
     ret                  
 
-call main_c 
+ call main_c 
+
 
 isr_common_stub:
   PUSHA
@@ -147,6 +149,9 @@ isr_common_stub:
 
   hlt
   call main_c 
+
+
+ 
 
 section .data
 

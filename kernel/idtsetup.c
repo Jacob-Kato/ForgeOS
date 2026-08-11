@@ -59,6 +59,7 @@ void idt_set_gate(int vector, void *handler) {
 }
 
 void nonreturn_error(const struct interrupt_frame *frame) {
+  serial_write("\n");
   serial_write("Vector: ");
   serial_write_hex(frame->Vector);
   serial_write("\n");
@@ -70,6 +71,7 @@ void nonreturn_error(const struct interrupt_frame *frame) {
   serial_write("\n");
   serial_write("RFLAGS: ");
   serial_write_hex(frame->RFLAGS);
+  serial_write("\n");
 }
 
 void explicit_instruction_error(struct interrupt_frame *frame) {
