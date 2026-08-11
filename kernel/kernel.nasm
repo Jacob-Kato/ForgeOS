@@ -119,8 +119,8 @@ extern main_c
 
 _start:
   mov rsp, kernel_stack_top
-  lidt [idtr_descriptor]  
   call kernel_main
+  lidt [idtr_descriptor]  
   
 
 kernel_trap:
