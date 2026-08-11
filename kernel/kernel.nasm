@@ -116,23 +116,28 @@ global main_loop
 extern kernel_main
 extern exception_handler
 extern main_c 
+
 _start:
   mov rsp, kernel_stack_top
+  lidt [idtr_descriptor]  
   call kernel_main
-  lidt [idtr_descriptor]
   
-  sti
+
+  mov rcx, 0xC0000080  ; Target a REAL register (IA32_EFER)
+  mov eax, 0xFFFFFFFF  ; Fill it with garbage
+  mov edx, 0xFFFFFFFF  ; Fill it with garbage
+  wrmsr                ; The CPU will GUARANTEE a #GP (Vector 13) here!
+  mov rax, 1
+  ret
+
+kernel_trap:
+  hlt
+  call main_c
+  jmp kernel_trap
 
 
-  error_test:
-    mov rcx, 0xDEADBEEF    
-    xor rdx, rdx          
-    xor rax, rax           
-    wrmsr                   
-    mov rax, 1 
-    ret                  
+  
 
- call main_c 
 
 
 isr_common_stub:
@@ -140,18 +145,12 @@ isr_common_stub:
   mov rax, cr2
   push rax
   mov rcx,rsp
-
   call exception_handler
   pop rax
   POPA
   add rsp,skip_bytes
   iretq 
 
-  hlt
-  call main_c 
-
-
- 
 
 section .data
 
