@@ -115,6 +115,7 @@ void exception_handler(struct interrupt_frame *frame) {
   case 14:
     break;
   default:
+    nonreturn_error(frame);
     break;
   }
 }
