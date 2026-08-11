@@ -125,19 +125,15 @@ _start:
 
 
 error_test:
-  clc
-  mov rax, 0xAAAAAAAAAAAAAAAA
-  mov rbx, 0xBBBBBBBBBBBBBBBB
-  mov rcx, 0xDEADBEEF
-  xor rdx, rdx
-  wrmsr
-
+    mov rcx, 0xDEADBEEF    
+    xor rdx, rdx          
+    xor rax, rax           
+    wrmsr                   
+    ret                  
 
 call main_c 
 
 isr_common_stub:
-  write_byte 'c'
-
   PUSHA
   mov rax, cr2
   push rax
