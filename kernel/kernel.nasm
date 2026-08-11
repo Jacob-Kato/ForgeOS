@@ -51,7 +51,7 @@ DEFAULT REL
 %macro ISR_NOERRCODE 1
   global isr%1
   isr%1:
-    push %1
+    push 0 
     push %1
     jmp isr_common_stub
 %endmacro
@@ -123,21 +123,9 @@ _start:
   call kernel_main
   
 
-  mov rcx, 0xC0000080  ; Target a REAL register (IA32_EFER)
-  mov eax, 0xFFFFFFFF  ; Fill it with garbage
-  mov edx, 0xFFFFFFFF  ; Fill it with garbage
-  wrmsr                ; The CPU will GUARANTEE a #GP (Vector 13) here!
-  mov rax, 1
-  ret
-
 kernel_trap:
   hlt
-  call main_c
   jmp kernel_trap
-
-
-  
-
 
 
 isr_common_stub:
