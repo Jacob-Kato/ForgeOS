@@ -111,15 +111,16 @@ global isr_common_stub
 global _start
 global isr_stub_table
 global idt_table
-global error_test
-global main_loop
 extern kernel_main
 extern exception_handler
-extern main_c 
 
 _start:
   mov rsp, kernel_stack_top
+
+  sub rsp, 32
   call kernel_main
+  add rsp, 32  
+
   lidt [idtr_descriptor]  
   
 
@@ -133,7 +134,10 @@ isr_common_stub:
   mov rax, cr2
   push rax
   mov rcx,rsp
+  sub rsp, 40
   call exception_handler
+  add rsp, 40
+
   pop rax
   POPA
   add rsp,skip_bytes
