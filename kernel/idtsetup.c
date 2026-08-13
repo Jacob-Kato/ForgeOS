@@ -86,10 +86,7 @@ void general_protection_error(struct interrupt_frame *frame) {
   const uint64_t CARRY_FLAG_MASK = 0x1ULL;
   const uint64_t ERROR_STATUS_CODE = 0xFFFFFFFFFFFFFFFFULL;
   const uint8_t MSR_INSTRUCTION_SIZE = 2;
-  uint64_t segment_selector = frame->Error_Code >> 3;
-  serial_write("Bottom 3 flag bits: ");
-  serial_write_hex_digit(segment_selector);
-  serial_write("\n");
+
   uint16_t *opcode = (uint16_t *)frame->RIP;
   if (*opcode == RDMSR || *opcode == WRMSR) {
     frame->RAX = 0;
@@ -97,6 +94,7 @@ void general_protection_error(struct interrupt_frame *frame) {
     frame->RIP += MSR_INSTRUCTION_SIZE;
     return;
   }
+
   frame->RAX = ERROR_STATUS_CODE;
   frame->RFLAGS |= CARRY_FLAG_MASK;
   frame->RIP += MSR_INSTRUCTION_SIZE;
@@ -129,7 +127,7 @@ void idt_init(void) {
 }
 
 void kernel_main(void) {
-  serial_write("kernel_main\n");
   init_serial();
   idt_init();
+  serial_write("kernel_main\n");
 }
