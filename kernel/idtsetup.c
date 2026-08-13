@@ -58,7 +58,7 @@ void idt_set_gate(int vector, void *handler) {
   idt_table[vector].reserved = 0;
 }
 
-void nonreturn_error(const struct interrupt_frame *frame) {
+void base_register_write(const struct interrupt_frame *frame) {
   serial_write("\n");
   serial_write("Vector: ");
   serial_write_hex_64(frame->Vector);
@@ -75,12 +75,12 @@ void nonreturn_error(const struct interrupt_frame *frame) {
 }
 
 void explicit_instruction_error(struct interrupt_frame *frame) {
-  nonreturn_error(frame);
+  base_register_write(frame);
   frame->RFLAGS |= 0x1ULL;
   frame->RIP += 2;
 }
 void general_protection_error(struct interrupt_frame *frame) {
-  nonreturn_error(frame);
+  base_register_write(frame);
   const uint16_t RDMSR = 0x320F;
   const uint16_t WRMSR = 0x300F;
   const uint64_t CARRY_FLAG_MASK = 0x1ULL;
@@ -103,7 +103,7 @@ void general_protection_error(struct interrupt_frame *frame) {
 void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
   case div_by0:
-    nonreturn_error(frame);
+    base_register_write(frame);
     while (1) {
       __asm__ __volatile__("hlt");
     }
@@ -118,7 +118,7 @@ void exception_handler(struct interrupt_frame *frame) {
   case 14:
     break;
   default:
-    nonreturn_error(frame);
+    base_register_write(frame);
     break;
   }
 }
