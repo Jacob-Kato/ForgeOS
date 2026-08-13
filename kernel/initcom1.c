@@ -50,8 +50,20 @@ void serial_write_hex_digit(const uint8_t value) {
   outb(COM1, ascii_char);
 }
 
-void serial_write_hex(uint8_t byte) {
+void serial_write_hex_8(uint8_t byte) {
   serial_write_hex_digit(byte >> 4);
   serial_write_hex_digit(byte);
+}
+void serial_write_hex_16(const uint16_t value) {
+  serial_write_hex_8(value >> 8);
+  serial_write_hex_8(value);
+}
+void serial_write_hex_32(const uint32_t value) {
+  serial_write_hex_32(value >> 16);
+  serial_write_hex_16(value);
+}
+void serial_write_hex_64(const uint64_t value) {
+  serial_write_hex_32(value >> 32);
+  serial_write_hex_32(value);
 }
 void init_serial() { serial_configure(); }
