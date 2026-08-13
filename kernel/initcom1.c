@@ -55,15 +55,19 @@ void serial_write_hex_8(uint8_t byte) {
   serial_write_hex_digit(byte);
 }
 void serial_write_hex_16(const uint16_t value) {
-  serial_write_hex_8(value >> 8);
-  serial_write_hex_8(value);
+  uint8_t low8bits = value >> 8;
+  uint8_t top8bits = value;
+  serial_write_hex_8(low8bits);
+  serial_write_hex_8(top8bits);
 }
 void serial_write_hex_32(const uint32_t value) {
   serial_write_hex_32(value >> 16);
   serial_write_hex_16(value);
 }
 void serial_write_hex_64(const uint64_t value) {
-  serial_write_hex_32(value >> 32);
-  serial_write_hex_32(value);
+  uint8_t low32bits = value >> 32;
+  uint8_t top32bits = value;
+  serial_write_hex_32(low32bits);
+  serial_write_hex_32(top32bits);
 }
 void init_serial() { serial_configure(); }
