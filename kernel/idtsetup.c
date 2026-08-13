@@ -103,7 +103,10 @@ void general_protection_error(struct interrupt_frame *frame) {
 void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
   case div_by0:
+    serial_write("#Divide by zero ERROR\n");
     base_register_write(frame);
+    serial_write("Terminating the program \n");
+    serial_write("Please Reboot\n");
     while (1) {
       __asm__ __volatile__("hlt");
     }
