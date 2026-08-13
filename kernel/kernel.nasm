@@ -122,6 +122,13 @@ _start:
   add rsp, 32  
 
   lidt [idtr_descriptor]  
+  sli 
+
+  erorr_test:
+    mov rax, 100
+    xor rdx,rdx
+    xor rbx,rbx 
+    div rbx 
   
 
 kernel_trap:

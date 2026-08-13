@@ -61,16 +61,16 @@ void idt_set_gate(int vector, void *handler) {
 void nonreturn_error(const struct interrupt_frame *frame) {
   serial_write("\n");
   serial_write("Vector: ");
-  serial_write_hex(frame->Vector);
+  serial_write_hex_64(frame->Vector);
   serial_write("\n");
   serial_write("Error Code: ");
-  serial_write_hex(frame->Error_Code);
+  serial_write_hex_64(frame->Error_Code);
   serial_write("\n");
   serial_write("RIP: ");
-  serial_write_hex(frame->RIP);
+  serial_write_hex_64(frame->RIP);
   serial_write("\n");
   serial_write("RFLAGS: ");
-  serial_write_hex(frame->RFLAGS);
+  serial_write_hex_64(frame->RFLAGS);
   serial_write("\n");
 }
 
@@ -104,6 +104,9 @@ void exception_handler(struct interrupt_frame *frame) {
   switch (frame->Vector) {
   case div_by0:
     nonreturn_error(frame);
+    while (1) {
+      __asm__ __volatile__("hlt");
+    }
     break;
   case invalid_opcode:
     explicit_instruction_error(frame);
