@@ -34,9 +34,7 @@ sometime the cpu pushes the error code
 [[ ERROR_CODE ]]
 [[ RIP        ]]
 [[ CS         ]]
-[[ RFLAGS     ]]
-[[ RSP        ]]
-[[ SS         ]]  ← first push
+[[ RFLAGS     ]]  ← first push
 [[ start here ]]
 
 Low memory addresses
@@ -53,14 +51,14 @@ the Windows calling conventions.
 CPU + `ISR_NOERRCODE` pushes:
 
 ``` text
-5 + 2 × 8
+3 + 2 × 8 = 40
 ```
 
 Then, when we jump to the common stub, we push 15 registers on top of
 that. So now:
 
 ``` text
-7 + 15 × 8
+5 + 15 × 8 = 160
 ```
 
 ------------------------------------------------------------------------
@@ -89,8 +87,6 @@ Latest push
 [[ RIP        ]]
 [[ CS         ]]
 [[ RFLAGS     ]]
-[[ RSP        ]]
-[[ SS         ]]
 [[ start here ]]
 
 Oldest push
@@ -104,8 +100,35 @@ In total, this is **184 bytes** of memory.
 It is aligned because:
 
 ``` text
-7(from the ISR_NOERRCODE + CPU) + 16(Macro + cr2 ) * 8 = 184
-184 % 16= 8 
+5(from the ISR_NOERRCODE + CPU) + 16(Macro + cr2 ) * 8 = 168
+168 % 16 = 8 
 ```
-## 5. ADD the 32 
+## 5. ADD the 33  
+--------------------- 
+------------ 
+
 now we need to call the exception_handler
+but we need to be 16 bytes aligned and we need 32 bytes of shadow space 
+we do this by sub 33 from RSP
+
+### Total Stack Size
+
+```text
+21 + 33 = 54
+54  * 8 = 432 
+432  % 16 = 0
+
+```
+## 6. The Return
+
+when we exit from the function before calling iretq
+we need to remove the 33 bytes shadow space and pop cr2 then add call 
+the pop macro then skip the error code and Vector
+
+
+```
+
+```
+
+```
+```
