@@ -111,14 +111,12 @@ we are not 16 bytes aligned
 ```text
 Alignment Math 
 
-why having a remainder of zero means the stack is aligned?
-because i deilberately set the stack to be aligned by 16 that means
-RSP(16) and if you 16 % 16 = 0 we know that at the beginning the stack is aligned so we need to keep if so that the value of RSP after mod by 16 will give us a remainder of 0.
+Init RSP:
+  RSP % 16 = 0
 
-Now:
-  168 % 16 = 8
-  we have a remainder of eight which 
-  means we're still not aligned
+Exception:
+  168 bytes
+  RSP % 16 = 8
 If 32:
   32 % 16 = 0
   8-0=8
@@ -139,9 +137,6 @@ If 40:
 ```
 ```
 ```
-now we know we are off by 8 so we can just add 8 to 32 to get 40 which would make it aligned
-we do this by sub 40 from the stack and we add 40 because 32 alone would make the stack misaligned
-so we add 8 because the stack is aligned by 16
 
 ### Total Stack Size
 
@@ -153,7 +148,7 @@ so we add 8 because the stack is aligned by 16
 ## 6. The Return
 
 when we exit from the function before calling iretq
-we need to remove the 40 bytes shadow space to get back to  cr2 then add call 
+we need to remove the 32 shadow + the 8 bytes padding bytes to get back to  cr2 then add call 
 the pop macro then skip the error code and Vector
 
 
