@@ -67,6 +67,8 @@ void base_register_write(const struct interrupt_frame *frame) {
   serial_write("RIP: ");
   serial_write_hex_64(frame->RIP);
   serial_write("\n");
+  serial_write_hex_64(frame->CR2);
+  serial_write("\n");
   serial_write("RFLAGS: ");
   serial_write_hex_64(frame->RFLAGS);
   serial_write("\n");
