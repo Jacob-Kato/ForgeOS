@@ -96,8 +96,6 @@ Oldest push
 
 In total, this is **168 bytes** of memory.
 
-It is aligned because:
-
 ``` text
 (5(from the ISR_NOERRCODE + CPU) + 15(Macro + cr2 ) + 1(cr2 push)) * 8 = 168
 168 % 16 = 8 
@@ -112,6 +110,10 @@ we are not 16 bytes aligned
 
 ```text
 Alignment Math 
+
+why having a remainder of zero means the stack is aligned?
+because i deilberately set the stack to be aligned by 16 that means
+RSP(16) and if you 16 % 16 = 0 we know that at the beginning the stack is aligned so we need to keep if so that the value of RSP after mod by 16 will give us a remainder of 0.
 
 Now:
   168 % 16 = 8
