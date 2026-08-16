@@ -20,8 +20,7 @@ for interrupts that don't have an error code.
   SS       ERROR_CODE
   RSP      Vector
   RFLAGS   
-  CS       
-  RIP      
+      
 
 The stack would look like this:
 
@@ -51,14 +50,14 @@ the Windows calling conventions.
 CPU + `ISR_NOERRCODE` pushes:
 
 ``` text
-3 + 2 × 8 = 40
+(3 + 2) × 8 = 40
 ```
 
 Then, when we jump to the common stub, we push 15 registers on top of
 that. So now:
 
 ``` text
-5 + 15 × 8 = 160
+(5 + 15) × 8 = 160
 ```
 
 ------------------------------------------------------------------------
@@ -74,19 +73,19 @@ pushed, so the very top and very bottom of the stack look like this:
 ------------
 Latest push
 
-[[ CR2        ]]
-[[ RAX        ]]
-[[ RBX        ]]
-[[ RCX        ]]
-[[ RDX        ]]
+[[ CR2        ]] -| 
+[[ RAX        ]]  |
+[[ RBX        ]]  |> PUSHA + cr2
+[[ RCX        ]]  |
+[[ RDX        ]] -|
 [[ ...        ]]
 [[ ...        ]]
-[[ ...        ]]
-[[ Vector     ]]
-[[ ERROR_CODE ]]
-[[ RIP        ]]
-[[ CS         ]]
-[[ RFLAGS     ]]
+[[ ...        ]] 
+[[ Vector     ]] -|
+[[ ERROR_CODE ]]  |
+[[ RIP        ]]  |> CPU + ISR 
+[[ CS         ]]  |
+[[ RFLAGS     ]] -|
 [[ start here ]]
 
 Oldest push
@@ -95,34 +94,64 @@ Oldest push
 
 ## 4. Total Stack Size
 
-In total, this is **184 bytes** of memory.
+In total, this is **168 bytes** of memory.
 
 It is aligned because:
 
 ``` text
-5(from the ISR_NOERRCODE + CPU) + 16(Macro + cr2 ) * 8 = 168
+(5(from the ISR_NOERRCODE + CPU) + 15(Macro + cr2 ) + 1(cr2 push)) * 8 = 168
 168 % 16 = 8 
 ```
-## 5. ADD the 33  
+## 5. ADD the 32 bytes of shadow space + the 8 bytes buffer 
 --------------------- 
 ------------ 
 
-now we need to call the exception_handler
-but we need to be 16 bytes aligned and we need 32 bytes of shadow space 
-we do this by sub 33 from RSP
+Now we need to call the exception_handler
+but we need to be 16 bytes aligned and we need 32 bytes of shadow space
+we are not 16 bytes aligned 
+
+```text
+Alignment Math 
+
+Now:
+  168 % 16 = 8
+  we have a remainder of eight which 
+  means we're still not aligned
+If 32:
+  32 % 16 = 0
+  8-0=8
+  you take the remainder of the current
+  stack and subtract it to get the alignment
+
+If 40:
+   40 % 16 = 8
+  8-8 = 0
+  now we are aligned
+```
+```
+
+```
+```
+
+
+```
+```
+```
+now we know we are off by 8 so we can just add 8 to 32 to get 40 which would make it aligned
+we do this by sub 40 from the stack and we add 40 because 32 alone would make the stack misaligned
+so we add 8 because the stack is aligned by 16
 
 ### Total Stack Size
 
 ```text
-21 + 33 = 54
-54  * 8 = 432 
-432  % 16 = 0
+168 + 40 = 208
+208  % 16 = 0
 
 ```
 ## 6. The Return
 
 when we exit from the function before calling iretq
-we need to remove the 33 bytes shadow space and pop cr2 then add call 
+we need to remove the 40 bytes shadow space to get back to  cr2 then add call 
 the pop macro then skip the error code and Vector
 
 
