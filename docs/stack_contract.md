@@ -17,8 +17,8 @@ for interrupts that don't have an error code.
 
   CPU      PROGRAM
   -------- ------------
-  SS       ERROR_CODE
-  RSP      Vector
+  RIP      ERROR_CODE
+  CS       Vector
   RFLAGS   
       
 
@@ -100,7 +100,7 @@ In total, this is **168 bytes** of memory.
 (5(from the ISR_NOERRCODE + CPU) + 15(Macro + cr2 ) + 1(cr2 push)) * 8 = 168
 168 % 16 = 8 
 ```
-## 5. ADD the 32 bytes of shadow space + the 8 bytes buffer 
+## 5. ADD the 32 bytes of shadow space + the 8 bytes padding
 --------------------- 
 ------------ 
 
