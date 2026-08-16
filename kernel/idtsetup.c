@@ -40,8 +40,6 @@ struct interrupt_frame {
   uint64_t RIP;
   uint64_t CS;
   uint64_t RFLAGS;
-  uint64_t RSP;
-  uint64_t SS;
 };
 
 extern struct idt_entry idt_table[total_vector];
