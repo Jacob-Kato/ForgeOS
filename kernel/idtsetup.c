@@ -75,9 +75,20 @@ void base_register_write(const struct interrupt_frame *frame) {
 }
 
 void explicit_instruction_error(struct interrupt_frame *frame) {
+  uint8_t *faulrting_prt = (uint8_t *)frame->RIP;
   base_register_write(frame);
-  frame->RFLAGS |= 0x1ULL;
-  frame->RIP += 2;
+
+  if (faulrting_prt[0] == 0x0F && faulrting_prt[1] == 0x0B) {
+    serial_write("Kernel requested termination via ud2.\n");
+    while (1) {
+      __asm__ __volatile__("hlt");
+    }
+  }
+
+  serial_write("Uncaught corrupt opcode. Halting system.\n");
+  while (1) {
+    __asm__ __volatile__("hlt");
+  }
 }
 void general_protection_error(struct interrupt_frame *frame) {
   base_register_write(frame);

@@ -1,0 +1,801 @@
+commit 0c65df25e603b03bdd7f984b16a000c3ba1ead04
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Aug 14 11:25:37 2026 -0400
+
+    verify the stack through a div by zero error
+
+commit 313096e8ee3eb208b92bd06e9b16da6c13c174a6
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 11:07:12 2026 -0400
+
+    verify the stack through a div by zero error
+
+commit 096dc25a4507dc0d0f58859a1c178dbf1a2330f9
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 10:52:08 2026 -0400
+
+    more info for div by zero error
+
+commit effdc82952538da7449050e492779ec18ba0dc2a
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 10:19:12 2026 -0400
+
+    fixed incorrectly named function
+
+commit a31e315ba42ef3091f5a54ad84176956518f90bf
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 10:12:09 2026 -0400
+
+    the write 64 hex works great
+
+commit 31769b4084e17331b32395e705a1a6db2ffdcc5b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 10:01:38 2026 -0400
+
+    fix bug with the types being diffrent from the c than the .h file
+
+commit 650ce5116aa5fad58bedad7f20182f0e8935167c
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 09:53:12 2026 -0400
+
+    added a write 16 and 32 and 64
+
+commit 131441e20b5ca94059762b2b158bfb977932412b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 13 08:57:34 2026 -0400
+
+    removed the segment_selector it was not needed
+
+commit 0f6d0be6177532b11739bc3a0284fff47df21de7
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Aug 12 10:44:42 2026 -0400
+
+    added 32 bytes shadow space for the calle
+
+commit 0b9840fc518ec87cbd68ec8a3e5588d62117b3fc
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 17:35:49 2026 -0400
+
+    -
+
+commit 8afb39fdf8f774403b582d93ecc05f20f04615c8
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 17:24:13 2026 -0400
+
+    changed the macro isr so that the fake error code is always 0
+
+commit f1a11cb3814d8be194b17ed576657c811dff4797
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 17:04:59 2026 -0400
+
+    stoping point for the day
+
+commit 4876994a4725cad2af3971d2d28346668bd1cd8a
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 12:55:49 2026 -0400
+
+    -
+
+commit c28b5b70bb51d8bf7acd0a7ba2579eb42f64fe2e
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 12:54:39 2026 -0400
+
+    The bug was that the cpu didn't know where the end of the error test lable was so it kept running and made it look like there was no error
+
+commit ab2b45b23090a9aaf5917dd9e0bc1131c88bf4d1
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 12:36:04 2026 -0400
+
+    fix: i thing im jumping to my main c file befor anything can happen
+
+commit 2971415d98246d45770d2cfec33b8728d7bec283
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 12:27:56 2026 -0400
+
+    fix: maybe my writing macro is messing up my registers
+
+commit 0e874c8701e0f0dd5aeb11dc19346c655697dc64
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 11 12:16:52 2026 -0400
+
+    test:i know that there is a error beacuse my common stub is called but it might not be the error i think it is so im going to test if my switch is droping to default
+
+commit 8fbc6dd06ff297362f406c1aee785a02c62fe778
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 16:19:54 2026 -0400
+
+    fix: my msr fault is not faulting i'm checking if my program hits the error_test lable
+
+commit 33b0342c808e2ef40f2edfa94175bd3fa3d111f1
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 16:05:55 2026 -0400
+
+    test: MSR fault
+
+commit 1646fa804d065b45d0665af6d5770295ee8dfdd4
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 15:52:35 2026 -0400
+
+    name change
+
+commit e63362ada85b71059a13e6189b500e42d057799e
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 15:51:37 2026 -0400
+
+    test:MSR Fault
+
+commit 4cb13019b7fafbee9563578a3bff2876680af32f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 15:04:36 2026 -0400
+
+    fix: had the wrong name in the make file
+
+commit 4ead09d76f874ad92877d9a363ea5322ff19dd51
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 15:01:37 2026 -0400
+
+    Feature: i'd rather program the main kernel in c then assembly so i moved it
+
+commit 00b8a018e07e47e5195624f4cf49bd5da8d28e5f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 14:49:15 2026 -0400
+
+    bug fixed: I was pushing zero for the error code no matter what vector it was.
+    
+    I changed it from a fixed const to a variable corresponding to the error
+
+commit bfb785ba93d1de20e035ec3a317675a3061a944b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 14:33:10 2026 -0400
+
+    test:We reach the return_error function but its tell me that the error code is 00 so im going to cheak the vector
+
+commit bcd843c3700b10e8f7f372fcf6da874e8851f690
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 14:27:48 2026 -0400
+
+    test:I think that the return function had a null frame pointer
+
+commit c23940210f426d07db34c4c520314d426b9a1954
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 14:22:55 2026 -0400
+
+    test:does the program call exception_handler
+
+commit 98a4988edf7505e0159c1e845707b60d811643ef
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 14:19:40 2026 -0400
+
+    test: is the program just reaching the end and looping again
+
+commit 05c1e669a8b82fa8fdbbb51f76d05699427d0526
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 14:13:35 2026 -0400
+
+    test:making sure that PUSHA is called
+
+commit 338d623a1bb2d445e48c1122221606c98cb43983
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 13:02:57 2026 -0400
+
+    test: testing Invalid Opcode exception
+
+commit bf1da10603912ceacf1309275d181353de39c2ac
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 12:26:37 2026 -0400
+
+    clean: Removing magic numbers
+    
+    Additions: cr2 was added to the frame
+
+commit 3066d0650edb3a09ef0dea34e79eaf015d5ddf9e
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 10 11:46:12 2026 -0400
+
+    fix: probable future bug in serial_write char* to const char*
+
+commit 67128058ca0dc704caa00eb56e648c62341481e9
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Sun Aug 9 14:25:56 2026 -0400
+
+    changed 0x38 from just a random magic number to something understandable
+
+commit 522b4291036db3113ec2a9599e426d130059d15e
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 6 11:24:18 2026 -0400
+
+    added a hex print and printed registers for div by zero
+
+commit b39fe3f0d65a9590fdf0126cfa8e46ac0611beb9
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Aug 6 10:01:41 2026 -0400
+
+    Name change
+
+commit 61d770065466bd4beeb2409baaa751f14e11e42b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Aug 5 11:20:40 2026 -0400
+
+    forgeprint
+
+commit 4aee836a607e2f9ca54797a6944107241bed51e6
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Aug 5 10:58:14 2026 -0400
+
+    making a fprint
+
+commit 4c41eb97b1f40511736e3176bf00512adef84de8
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Aug 5 10:45:59 2026 -0400
+
+    -idt-YLMH-km-1B2hCAO
+    
+    Y — IDT entry reconstructs correctly.
+    LMH — All three pieces of the ISR address are correct.
+    B — The CPU load IDT.
+    h — i discovered the current CS selector is 0x38.
+    C — The CPU entered isr_common_stub.
+    A — exception_handler() was called with Vector == 0.
+    O — the handler entered its infinite halt loop.
+
+commit a8a4fb47d4e654569562d319e90317f32c7c9f3f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Aug 5 09:50:20 2026 -0400
+
+    verify the idtr i want to see if the cpu loads the same idt the c initialized
+
+commit 68da7f53177498bc007f2d85fdd90694502677fe
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 4 10:14:24 2026 -0400
+
+    see if my idt_init works
+
+commit 21d6fb3c5ad188c3db14cfb8deaa96620877bd00
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 4 10:09:41 2026 -0400
+
+    syntax error i had 0x3F*=8 ->0x3F8
+
+commit caeb6f1a8a76dc47a038c39dc614e9009ac48dd3
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 4 10:06:45 2026 -0400
+
+    -
+
+commit be177720838e91a5a1a424c8ae7423fb5dc1f4c7
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Aug 4 10:06:16 2026 -0400
+
+    debuging div zero
+    
+    I'm going to see if my program hits the common stub if it does it will output XA if not it will just be X
+
+commit 778c17f537d86795ff917925611afd05936a8df9
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 3 19:10:36 2026 -0400
+
+    COM1 test and debug
+
+commit 7d8270c257127be2e2fab2bf6fe737adef40dce2
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Aug 3 14:50:38 2026 -0400
+
+    all
+
+commit f743a28187be907348ea59a592cca71521cceafb
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Sat Aug 1 10:29:15 2026 -0400
+
+    The shell of the exception handler
+
+commit e76b67576d5962052fb5791216d31ca2393de7ce
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 31 11:20:52 2026 -0400
+
+    wrote a C function that receives the frame
+    
+    Decode the exception vector and halted
+
+commit 93d4317ed35c9c51a4c733cb4f3efa799e10129c
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 31 10:45:33 2026 -0400
+
+    Define a struct to match the saved state of the cpu
+
+commit 684ff297396d91b76ccdfe26703ada556f465c06
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 31 10:19:35 2026 -0400
+
+    saving CPU state
+
+commit 2e7395f79ee24b88a0a56efb4ffc41f6fe00fe25
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 30 10:08:05 2026 -0400
+
+    v0.1.0
+
+commit 6536953f23b3bbf0d07ee73096699e7102ebda5d
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 30 09:46:11 2026 -0400
+
+    -
+
+commit 5ae6bae820784bf3d6d8c23e8af2080141490b8e
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 30 09:33:54 2026 -0400
+
+    v0.1.0
+
+commit 9e500d33c8213e76859e87a914b8c552b594fce3
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 30 09:26:18 2026 -0400
+
+    -
+
+commit 79440ad621b3547af17d9cb15b654d24465842ae
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 30 09:16:06 2026 -0400
+
+    Detailed v0.0.0 notes
+
+commit c7b3b2af29d447c6a61dc2d2b7cdca35ab741be0
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 28 11:52:16 2026 -0400
+
+    made a stack for kernel_main
+
+commit 0eeda06ab52118418e44e8e557e7d77f20f4bf03
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 28 11:26:48 2026 -0400
+
+    fix bug with boot.nasm
+    
+    I had a place holde code that i forgot to change that held the program
+
+commit a39d90bcfdc725897c453f233df951395805dc31
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 28 10:43:20 2026 -0400
+
+    moving rsp to a valid stack before a interrupt
+
+commit 096af6b512fe8fc43b76af2ff0207a0af282a533
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 28 10:36:13 2026 -0400
+
+    fixed idt and div by 0
+
+commit acefacc145d45d9652930aa0b48fe978e899a9c7
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 27 19:15:30 2026 -0400
+
+    initialize the idt
+
+commit b3589aa75d4ba9db45a1be9617ec28d750418a0a
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 27 18:37:56 2026 -0400
+
+    idt gate and struct
+
+commit b717fcde8577f89bd7644f9a50a2a0c645b184af
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 27 11:12:17 2026 -0400
+
+    test my stub array
+
+commit b557c2999b5484ac58627717cee55c3dd0bb434a
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 27 11:09:04 2026 -0400
+
+    m
+
+commit aac663bd881cc9ac88e6f67e8d5cbbe10f63383f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 24 13:25:01 2026 -0400
+
+    made the 251 stubs and the pointer array
+
+commit f7c7aaa48eaf9dc0e3784785a903fd0a7201d89f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 23 08:56:30 2026 -0400
+
+    cleaning up to make a automated 256-stub array
+
+commit ea7f4b01ebb70c29aed39e4fa256dbcc9a94aa8d
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 21 18:25:26 2026 -0400
+
+    spelling fix -keyborad to keyboard
+
+commit 631b9b9febcf97db88ddc3a2fbf8337691444c9b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 21 18:09:07 2026 -0400
+
+    Trying to add keyborad interrupts
+    
+    Increased descriptor table from 16 to 256
+    
+    made the interrupt handler
+
+commit 6ae7b6b383babb3e66411bd4275e81c966fcc541
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 20 12:17:36 2026 -0400
+
+    -
+
+commit 5c6b6611781b643fa254d973affc2cb85d1e9d3b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 20 11:17:18 2026 -0400
+
+    removed Bug Fix Relocation Truncated_to_Fit IMAGE REL AMD64 ADDR34
+
+commit ca2662086473537c557a6760da934ab2bcacbbba
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 20:27:45 2026 -0400
+
+    Bug Fix Relocation Truncated_to_Fit IMAGE REL AMD64 ADDR32
+
+commit 09d6d70b2b8d1b51af7e9ce5a2ecb300602937cf
+Author: Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 20:24:03 2026 -0400
+
+    Delete linker/linker.ld
+
+commit fc96c971cf38dda6322c1c7c2089fc9d16128cea
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 20:22:15 2026 -0400
+
+    Bug Fix Relocation Truncated_to_Fit IMAGE REL AMD64 ADDR32
+
+commit e7397789f664047dee540394dbf1745b86ef8b55
+Merge: 61acbe4 f669232
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 18:16:20 2026 -0400
+
+    Merge branch 'main' of https://github.com/Jacob-Kato/ForgeOS
+
+commit 61acbe4da713c1488742d63aedcc58db57195ed3
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 18:15:11 2026 -0400
+
+    ''
+
+commit f669232577d467fe19e040fe70e353c7a8884326
+Author: Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 18:14:01 2026 -0400
+
+    Update README.md
+
+commit 07208d2d0f2b62fab7a4289b51b430e8a1f42ba6
+Author: Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 18:13:09 2026 -0400
+
+    Update README.md
+
+commit 8f496e33aa05bd8f02cafb3dbf7e48fd7b6f2379
+Author: Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 18:12:37 2026 -0400
+
+    Update README.md
+
+commit 776fe1af55edf9be58e480edcf70009d6172c01f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 17:55:18 2026 -0400
+
+    fixed a typo in the MakeFile
+
+commit 2529038eb800b88b4e43e0bf400fc12c9ed8a45b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 17:48:16 2026 -0400
+
+    just copied 'Programming for EFI Creating a Hello Word program' for my MakeFile
+
+commit 6dfe4ed87f97151f6ddfa9db1abaa298df0cac97
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 17:19:05 2026 -0400
+
+    first linker after reading eecs373 at umich pdf on gnu linkers
+
+commit 0fdeee8213d89be26cf2d65dc5fb83a1515a881c
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 16 13:43:08 2026 -0400
+
+    Bootloader and Kernel IDT note done
+
+commit 068208f3811e5a7f43fa6e5d70c211e59f276a56
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 15 15:06:04 2026 -0400
+
+    ''
+
+commit fc5d17785e532d168e5835cb3b246e13886d286c
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 15 15:05:13 2026 -0400
+
+    Notes to help me remember
+
+commit aa8e97afc711e3a2dee34ebb63419eec19a7225d
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 15 14:06:41 2026 -0400
+
+    telling the CPU to look at my idtr_descriptor
+
+commit 389eef52269cf6db948e0e65cb73ba173135c658
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 16:13:52 2026 -0400
+
+    buliding the interrupt Descriptor table
+
+commit 652693128e9f2457682d8e70da13cf5d2019cf3f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 15:39:15 2026 -0400
+
+    complete bootloader
+
+commit de27759645d1ba1da5d704017dbb9c028ba1067d
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 15:15:17 2026 -0400
+
+    removing the UEFI hold and puthing the cpu on hold
+
+commit d8690ab8effa9bbdd384b11b08bc98faad9e6907
+Merge: 2e99a0f 9c5fb16
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 14:37:40 2026 -0400
+
+    Merge branch 'main' of https://github.com/Jacob-Kato/ForgeOS
+
+commit 2e99a0fa1a35e9dbded0c6aa249dc44e8d77837f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 14:36:28 2026 -0400
+
+    found and saved the boot service pointer
+
+commit 62f98f283fb0184f2761bc13d7e8a51d3da271be
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 13:04:09 2026 -0400
+
+    trying to understand the boot code
+
+commit 9c5fb16eb2971032c707e3e2b8158cc6da71ef3e
+Author: Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 10:34:07 2026 -0400
+
+    Update README.md
+
+commit f85e35ac7b599327130ccb226c355e39e78c1d7b
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 10:12:30 2026 -0400
+
+    first test run
+
+commit d7875228a9a22349779521a463092831fa2cece0
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 09:58:07 2026 -0400
+
+    my build automation script
+
+commit 45ec9b9b98a669746306e45772284a1dbeaa0bc6
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Tue Jul 14 09:47:30 2026 -0400
+
+    V0 ForgeOS
+
+commit 28c3a6831a3092124339c20a606a2baad755866f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 13 20:45:11 2026 -0400
+
+    made the kernel function that will print -ForgeOS-
+
+commit 68f8f4ab31812c22b1edad4f1d89a49b7ada6adf
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 13 20:18:02 2026 -0400
+
+    function to get the memory map
+
+commit 2b7764ecd441115da206d55ee1f5380c7b9a85de
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 13 19:21:47 2026 -0400
+
+    switch from BIOS loading to UEFI
+
+commit aeaa04288fc6d209912112f638f17f23d918d7da
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Mon Jul 13 16:19:43 2026 -0400
+
+    made a simple bootloader that loads,than halts
+
+commit 1110850d894e6b20b2b073550a87555f5193da57
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 10 13:14:23 2026 -0400
+
+    added more structure to my notes
+
+commit 5e1d3107b8f064e216c4e2215f1cae94cc4b8dfe
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 10 11:11:17 2026 -0400
+
+    Power on notes
+
+commit 98471eedbd9721449a3b6b44149a50c209bd1fd1
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 9 16:24:27 2026 -0400
+
+    The Complete ForgeCPU V1 doc
+
+commit 93f00809c46bafe8545a3d73c2a79c9dd989e07c
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 9 16:09:56 2026 -0400
+
+    The Complete ForgeCPUV1
+
+commit 6f8f4f6a16ec1369e8fdd1531bde39fac0291bc5
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 9 10:59:37 2026 -0400
+
+    changed the name of the 'cache' to flage register
+
+commit 08fef257c950f2e453136bd3fef53812938fbca1
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 9 10:49:14 2026 -0400
+
+    Wrote my first loop program with my own Instructions
+
+commit 5b2f0c15614383925587c69a022b8bfd2209c2ba
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Thu Jul 9 10:19:10 2026 -0400
+
+    added compare and jump also increased opcode(3 bit) and memory(16 bit) size
+
+commit 1ae81dde3a4d011a17861b7b2053540876029629
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 8 10:10:35 2026 -0400
+
+    trying to write a loop program
+
+commit 5b8e40d929dc7b708d8958f4292ab146189a9e78
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Fri Jul 3 11:16:20 2026 -0400
+
+    Dual LOAD instructions fix
+
+commit 205ce4f32af84725a7b4b4a1df3e8ca8be6f1b50
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 23:28:36 2026 -0400
+
+    ForgeCPU V0 complete
+
+commit ccd618ce55442321c7e92f481bcac9af255f650e
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 23:16:01 2026 -0400
+
+    fixed indexing bug with a try block
+
+commit d30aebbb58d7cb8769259a6ee7efc07d9fca255f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 21:00:53 2026 -0400
+
+    fix the while bug
+
+commit 085658737f20024a290ebd023c490763ac5c3178
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 20:46:20 2026 -0400
+
+    Try to fix the loop problem
+
+commit 7ab46f8584a9363fbff635a00f22b8090e11d258
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 20:24:58 2026 -0400
+
+    The rule i have to follow
+
+commit dd7c212ab10b8c96ec0cfa24e17e0dfbadeceb9f
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 20:18:52 2026 -0400
+
+    first version of the toy CPU
+
+commit 8023fc70e74ae48f2746a96c99288a2007af5284
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 19:52:30 2026 -0400
+
+    woking on a decoder for the cpu having trouble
+
+commit 56ccff322cdb877ecab29a56242787951d3d4b8a
+Author: Jacob-Kato <jacobyala23@gmail.com>
+Date:   Wed Jul 1 18:49:39 2026 -0400
+
+    Testing verified badge signature
+
+commit 63520db1fe4bd62d04e659887f494e77cb2a4cc1
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Wed Jul 1 18:47:08 2026 -0400
+
+    Testing verified badge signature
+
+commit 50a82e4692dc49c5c8e7afda38b630e53087c394
+Author: Jacob Kato <jacobyala23@gamil.com>
+Date:   Wed Jul 1 18:46:27 2026 -0400
+
+    Testing verified badge signature
+
+commit f2bef35750cb42921a8e95eea327bb6b6fdad168
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Wed Jul 1 18:43:42 2026 -0400
+
+    Testing verified badge signature
+
+commit da7cbce3ffa8053ac118d64066641ba53edf1e2f
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Wed Jul 1 18:33:59 2026 -0400
+
+    Started making a toy cpu to understand them
+
+commit 4a13b22adfc986a61a2cef8293a6602d0f3d21c6
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Tue Jun 30 23:20:26 2026 -0400
+
+    I added 3 Rule a instruction should satisfie
+
+commit 2ab76b5cd50c35adf3f6752f1525b04905c427f3
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Tue Jun 30 23:04:15 2026 -0400
+
+    I removed the roadmap and progress not needed
+
+commit 5571e84d0b8f9a29abfe9dab11ca192885f902de
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Tue Jun 30 07:11:31 2026 -0400
+
+    Lesson 3 completed Logic gate
+
+commit 3f514598001dfc1dc195a0e8f81e922be55fa188
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Mon Jun 29 20:31:30 2026 -0400
+
+    Lesson 1 completed
+
+commit 5a27a7a38ad79a2dd253fa3ac75b2d2a998725a0
+Merge: ea62cb2 805544b
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Mon Jun 29 20:26:26 2026 -0400
+
+    Merge branch 'main' of https://github.com/Jacob-Kato/ForgeOS
+    
+    idk
+
+commit ea62cb2d643a01b11e0c2b94075571727ba5cfaf
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Mon Jun 29 20:24:42 2026 -0400
+
+    Lesson 1 completed
+
+commit 805544be8bb0a2139e95f43d83682eb1525d760f
+Author: Kato <jacobyala23@gmail.com>
+Date:   Mon Jun 29 10:11:21 2026 -0400
+
+    Update philosophy.md
+
+commit e64f3ca2637484d49ea328b97373a2d2d7a1dcac
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Mon Jun 29 10:06:24 2026 -0400
+
+    Add Project philosophy
+
+commit 7f5af2c52a502431de9416f69187a14b76c3d9d2
+Merge: 7fb700f 07d49fb
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Sun Jun 28 22:34:25 2026 -0400
+
+    Merge branch 'main' of https://github.com/Jacob-Kato/ForgeOS
+
+commit 07d49fb594365e98933c2b8894e449bd6f9a2b19
+Author: Kato <jacobyala23@gmail.com>
+Date:   Sun Jun 28 22:25:48 2026 -0400
+
+    Initial commit
+
+commit 7fb700f11e0fa84036502c8f697200fa61a3e1e6
+Author: Jacob-Kato <jacobyala23@gamil.com>
+Date:   Sun Jun 28 22:17:11 2026 -0400
+
+    Initial Project Structure
